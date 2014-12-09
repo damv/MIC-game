@@ -1,0 +1,1 @@
+"C:\Users\Coco\Desktop\MIC\projects\tonegen\tonegen.obj"  TO "C:\Users\Coco\Desktop\MIC\projects\tonegen\tonegen" RS(256) PL(68) PW(78)  

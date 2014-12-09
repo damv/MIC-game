@@ -1,0 +1,450 @@
+BL51 BANKED LINKER/LOCATER V6.22              12/09/2014  16:51:56  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE C:\Users\Coco\Desktop\MIC\projects\tonegen\tonegen.ob
+>> j TO C:\Users\Coco\Desktop\MIC\projects\tonegen\tonegen RS (256) PL (68) PW
+>>  (78)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  C:\Users\Coco\Desktop\MIC\projects\tonegen\tonegen.obj (TONEGEN)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?CLDPTR)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?CSTPTR)
+  C:\KEIL\C51\LIB\C51S.LIB (PRINTF)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_INIT)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?CLDOPTR)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?PLDIIDATA)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?CCASE)
+  C:\KEIL\C51\LIB\C51S.LIB (PUTCHAR)
+
+
+LINK MAP OF MODULE:  C:\Users\Coco\Desktop\MIC\projects\tonegen\tonegen (TONEG
+>> EN)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0014H     UNIT         _DATA_GROUP_
+                    001CH     0004H                  *** GAP ***
+            BIT     0020H.0   0001H.1   UNIT         _BIT_GROUP_
+                    0021H.1   0000H.7                *** GAP ***
+            DATA    0022H     002EH     UNIT         ?DT?TONEGEN
+            IDATA   0050H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     0028H                  *** GAP ***
+            CODE    002BH     0003H     ABSOLUTE     
+                    002EH     0025H                  *** GAP ***
+            CODE    0053H     0003H     ABSOLUTE     
+                    0056H     07AAH                  *** GAP ***
+            CODE    0800H     035CH     UNIT         ?PR?PRINTF?PRINTF
+            CODE    0B5CH     008EH     UNIT         ?C?LIB_CODE
+            CODE    0BEAH     008CH     UNIT         ?C_C51STARTUP
+            CODE    0C76H     006FH     UNIT         ?PR?MAIN?TONEGEN
+            CODE    0CE5H     0042H     UNIT         ?PR?TIMER2_ISR?TONEGEN
+            CODE    0D27H     003DH     UNIT         ?C_INITSEG
+            CODE    0D64H     0027H     UNIT         ?PR?PUTCHAR?PUTCHAR
+            CODE    0D8BH     001AH     UNIT         ?PR?_TIMER2_INIT?TONEGEN
+            CODE    0DA5H     0019H     UNIT         ?PR?_SMBUS_WRITE?TONEGEN
+            CODE    0DBEH     0013H     UNIT         ?PR?PORT_INIT?TONEGEN
+            CODE    0DD1H     0013H     UNIT         ?PR?ADC_INIT?TONEGEN
+            CODE    0DE4H     0012H     UNIT         ?PR?_EVENT_CHECK?TONEGEN
+            CODE    0DF6H     0011H     UNIT         ?PR?UART0_INIT?TONEGEN
+            CODE    0E07H     000FH     UNIT         ?PR?SERVO_INIT?TONEGEN
+            CODE    0E16H     000EH     UNIT         ?CO?TONEGEN
+            CODE    0E24H     0009H     UNIT         ?PR?ADC_ISR?TONEGEN
+            CODE    0E2DH     0008H     UNIT         ?PR?_PUT_CHAR_?TONEGEN
+            CODE    0E35H     0007H     UNIT         ?PR?SYSCLK_INIT?TONEGEN
+            CODE    0E3CH     0005H     UNIT         ?PR?_EVENT_TRIGGER?TONEGE
+>> N
+            CODE    0E41H     0005H     UNIT         ?PR?SMBUS_BEGIN?TONEGEN
+BL51 BANKED LINKER/LOCATER V6.22            12/09/2014  16:51:56  PAGE 2
+
+
+            CODE    0E46H     0004H     UNIT         ?PR?_EVENT_INIT?TONEGEN
+            CODE    0E4AH     0004H     UNIT         ?PR?SMBUS_INIT?TONEGEN
+
+
+
+OVERLAY MAP OF MODULE:   C:\Users\Coco\Desktop\MIC\projects\tonegen\tonegen (T
+>> ONEGEN)
+
+
+SEGMENT                               BIT_GROUP          DATA_GROUP 
+  +--> CALLED SEGMENT              START    LENGTH     START    LENGTH
+----------------------------------------------------------------------
+?PR?TIMER2_ISR?TONEGEN             -----    -----      -----    -----
+  +--> ?PR?_EVENT_TRIGGER?TONEGEN
+
+*** NEW ROOT ***************************************************
+
+?C_C51STARTUP                      -----    -----      -----    -----
+  +--> ?PR?MAIN?TONEGEN
+  +--> ?C_INITSEG
+
+?PR?MAIN?TONEGEN                   -----    -----      -----    -----
+  +--> ?PR?SYSCLK_INIT?TONEGEN
+  +--> ?PR?PORT_INIT?TONEGEN
+  +--> ?PR?_TIMER2_INIT?TONEGEN
+  +--> ?PR?UART0_INIT?TONEGEN
+  +--> ?PR?ADC_INIT?TONEGEN
+  +--> ?PR?SMBUS_INIT?TONEGEN
+  +--> ?PR?SERVO_INIT?TONEGEN
+  +--> ?PR?SMBUS_BEGIN?TONEGEN
+  +--> ?PR?_EVENT_CHECK?TONEGEN
+  +--> ?CO?TONEGEN
+  +--> ?PR?PRINTF?PRINTF
+
+?PR?SMBUS_BEGIN?TONEGEN            -----    -----      -----    -----
+  +--> ?PR?_SMBUS_WRITE?TONEGEN
+
+?PR?PRINTF?PRINTF                  0020H.0  0001H.1    0008H    0014H
+  +--> ?PR?PUTCHAR?PUTCHAR
+
+
+
+SYMBOL TABLE OF MODULE:  C:\Users\Coco\Desktop\MIC\projects\tonegen\tonegen (T
+>> ONEGEN)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        TONEGEN
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  C:0E3CH         PUBLIC        _event_trigger
+  D:0023H         SYMBOL        second
+  D:0080H         PUBLIC        P0
+  D:00BCH         PUBLIC        ADC0CF
+  D:00B0H         PUBLIC        P3
+  C:0DF6H         PUBLIC        UART0_init
+  C:0CE5H         PUBLIC        Timer2_ISR
+  B:00A8H.7       PUBLIC        EA
+  C:0DE4H         PUBLIC        _event_check
+  D:0025H         PUBLIC        AnPhiPot
+  D:00E8H         PUBLIC        ADC0CN
+  D:00A4H         PUBLIC        P0MDOUT
+  D:00A5H         PUBLIC        P1MDOUT
+  D:00A8H         PUBLIC        IE
+  D:00A7H         PUBLIC        P3MDOUT
+BL51 BANKED LINKER/LOCATER V6.22            12/09/2014  16:51:56  PAGE 3
+
+
+  D:0029H         PUBLIC        AnBiPot
+  D:00FCH         PUBLIC        PCA0CPH0
+  B:00D8H.6       PUBLIC        CR
+  B:00C8H.7       PUBLIC        TF2H
+  B:0098H.4       PUBLIC        REN0
+  D:00DAH         PUBLIC        PCA0CPM0
+  D:00D9H         PUBLIC        PCA0MD
+  D:00D8H         PUBLIC        PCA0CN
+  C:0E24H         PUBLIC        ADC_ISR
+  D:00B8H         PUBLIC        IP
+  C:0DA5H         PUBLIC        _SMBUS_write
+  C:0E2DH         PUBLIC        _Put_char_
+  D:002BH         PUBLIC        index
+  B:00C0H.0       PUBLIC        SI
+  D:00E1H         PUBLIC        XBR0
+  D:00C1H         PUBLIC        SMB0CF
+  D:00E2H         PUBLIC        XBR1
+  D:00D1H         PUBLIC        REF0CN
+  B:00E8H.5       PUBLIC        AD0INT
+  C:0E4AH         PUBLIC        SMBUS_init
+  D:00C0H         PUBLIC        SMB0CN
+  D:00CCH         PUBLIC        TMR2
+  C:0C76H         PUBLIC        main
+  C:0E07H         PUBLIC        SERVO_init
+  D:002DH         PUBLIC        AnVoPot
+  C:0D8BH         PUBLIC        _Timer2_Init
+  D:00F8H         PUBLIC        SPI0CN
+  D:002FH         PUBLIC        top_second
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  D:00C8H         PUBLIC        TMR2CN
+  D:0030H         PUBLIC        song
+  D:00D4H         PUBLIC        P0SKIP
+  C:0E46H         PUBLIC        _event_init
+  C:0DBEH         PUBLIC        PORT_Init
+  D:00B2H         PUBLIC        OSCICN
+  D:00CAH         PUBLIC        TMR2RL
+  D:00FBH         PUBLIC        PCA0CP0
+  B:00A8H.5       PUBLIC        ET2
+  B:0098H.0       PUBLIC        RI0
+  B:0098H.1       PUBLIC        TI0
+  D:008DH         PUBLIC        TH1
+  C:0E35H         PUBLIC        SYSCLK_Init
+  B:00B0H.3       PUBLIC        LED
+  B:0088H.6       PUBLIC        TR1
+  B:00C8H.2       PUBLIC        TR2
+  C:0DD1H         PUBLIC        ADC_init
+  D:0099H         PUBLIC        SBUF0
+  D:00EFH         PUBLIC        RSTSRC
+  D:0098H         PUBLIC        SCON0
+  D:00BAH         PUBLIC        AMX0N
+  D:00BBH         PUBLIC        AMX0P
+  B:00C0H.5       PUBLIC        STA
+  D:00C2H         PUBLIC        SMB0DAT
+  D:008EH         PUBLIC        CKCON
+  C:0E41H         PUBLIC        SMBUS_begin
+  D:00BDH         PUBLIC        ADC0
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          MAIN
+  C:0C76H         LINE#         51
+  C:0C76H         LINE#         52
+  C:0C76H         LINE#         53
+  C:0C79H         LINE#         54
+  C:0C7CH         LINE#         55
+  C:0C7FH         LINE#         56
+BL51 BANKED LINKER/LOCATER V6.22            12/09/2014  16:51:56  PAGE 4
+
+
+  C:0C86H         LINE#         57
+  C:0C89H         LINE#         58
+  C:0C8CH         LINE#         59
+  C:0C8FH         LINE#         60
+  C:0C92H         LINE#         62
+  C:0C94H         LINE#         64
+  C:0C97H         LINE#         65
+  C:0C97H         LINE#         66
+  C:0C97H         LINE#         67
+  C:0CA4H         LINE#         68
+  C:0CA4H         LINE#         69
+  C:0CA7H         LINE#         70
+  C:0CA9H         LINE#         71
+  C:0CB4H         LINE#         72
+  C:0CB4H         LINE#         73
+  C:0CB6H         LINE#         74
+  C:0CB6H         LINE#         75
+  C:0CB8H         LINE#         76
+  C:0CB8H         LINE#         77
+  C:0CBAH         LINE#         78
+  C:0CCFH         LINE#         79
+  C:0CCFH         LINE#         80
+  C:0CCFH         LINE#         81
+  C:0CCFH         LINE#         82
+  C:0CCFH         LINE#         83
+  C:0CCFH         LINE#         85
+  C:0CD6H         LINE#         86
+  C:0CD9H         LINE#         87
+  C:0CD9H         LINE#         88
+  C:0CE0H         LINE#         89
+  C:0CE3H         LINE#         90
+  C:0CE3H         LINE#         93
+  C:0CE3H         LINE#         94
+  -------         ENDPROC       MAIN
+  -------         PROC          _EVENT_INIT
+  D:0001H         SYMBOL        e
+  C:0E46H         LINE#         97
+  C:0E46H         LINE#         98
+  C:0E46H         LINE#         99
+  -------         ENDPROC       _EVENT_INIT
+  -------         PROC          _EVENT_TRIGGER
+  D:0001H         SYMBOL        e
+  C:0E3CH         LINE#         102
+  C:0E3CH         LINE#         103
+  C:0E3CH         LINE#         104
+  -------         ENDPROC       _EVENT_TRIGGER
+  -------         PROC          _EVENT_CHECK
+  D:0001H         SYMBOL        e
+  C:0DE4H         LINE#         107
+  C:0DE4H         LINE#         108
+  C:0DE4H         LINE#         109
+  C:0DEAH         LINE#         110
+  C:0DEEH         LINE#         111
+  C:0DF2H         LINE#         112
+  C:0DF2H         LINE#         113
+  C:0DF2H         LINE#         114
+  C:0DF5H         LINE#         115
+  C:0DF5H         LINE#         116
+  -------         ENDPROC       _EVENT_CHECK
+  -------         PROC          UART0_INIT
+  C:0DF6H         LINE#         118
+  C:0DF6H         LINE#         119
+  C:0DF6H         LINE#         120
+  C:0DF9H         LINE#         121
+  C:0DFCH         LINE#         122
+BL51 BANKED LINKER/LOCATER V6.22            12/09/2014  16:51:56  PAGE 5
+
+
+  C:0DFFH         LINE#         123
+  C:0E01H         LINE#         124
+  C:0E03H         LINE#         125
+  C:0E06H         LINE#         126
+  -------         ENDPROC       UART0_INIT
+  -------         PROC          PORT_INIT
+  C:0DBEH         LINE#         128
+  C:0DBEH         LINE#         129
+  C:0DBEH         LINE#         130
+  C:0DC1H         LINE#         131
+  C:0DC4H         LINE#         132
+  C:0DC7H         LINE#         133
+  C:0DCAH         LINE#         134
+  C:0DCDH         LINE#         135
+  C:0DD0H         LINE#         136
+  -------         ENDPROC       PORT_INIT
+  -------         PROC          SYSCLK_INIT
+  C:0E35H         LINE#         138
+  C:0E35H         LINE#         139
+  C:0E35H         LINE#         140
+  C:0E38H         LINE#         141
+  C:0E3BH         LINE#         142
+  -------         ENDPROC       SYSCLK_INIT
+  -------         PROC          SMBUS_INIT
+  C:0E4AH         LINE#         144
+  C:0E4AH         LINE#         145
+  C:0E4AH         LINE#         146
+  C:0E4DH         LINE#         147
+  -------         ENDPROC       SMBUS_INIT
+  -------         PROC          _PUT_CHAR_
+  D:0007H         SYMBOL        c
+  C:0E2DH         LINE#         149
+  C:0E2DH         LINE#         150
+  C:0E2DH         LINE#         151
+  C:0E30H         LINE#         152
+  C:0E32H         LINE#         153
+  C:0E34H         LINE#         154
+  -------         ENDPROC       _PUT_CHAR_
+  -------         PROC          _TIMER2_INIT
+  D:0006H         SYMBOL        counts
+  C:0D8BH         LINE#         156
+  C:0D8BH         LINE#         157
+  C:0D8BH         LINE#         158
+  C:0D8EH         LINE#         160
+  C:0D91H         LINE#         162
+  C:0D9AH         LINE#         163
+  C:0DA0H         LINE#         164
+  C:0DA2H         LINE#         165
+  C:0DA4H         LINE#         166
+  -------         ENDPROC       _TIMER2_INIT
+  -------         PROC          ADC_INIT
+  C:0DD1H         LINE#         168
+  C:0DD1H         LINE#         169
+  C:0DD1H         LINE#         170
+  C:0DD4H         LINE#         171
+  C:0DD7H         LINE#         172
+  C:0DDAH         LINE#         173
+  C:0DDDH         LINE#         174
+  C:0DE0H         LINE#         175
+  C:0DE3H         LINE#         176
+  -------         ENDPROC       ADC_INIT
+  -------         PROC          SERVO_INIT
+  C:0E07H         LINE#         178
+  C:0E07H         LINE#         179
+  C:0E07H         LINE#         180
+BL51 BANKED LINKER/LOCATER V6.22            12/09/2014  16:51:56  PAGE 6
+
+
+  C:0E09H         LINE#         181
+  C:0E0CH         LINE#         182
+  C:0E12H         LINE#         183
+  C:0E15H         LINE#         184
+  -------         ENDPROC       SERVO_INIT
+  -------         PROC          SMBUS_BEGIN
+  C:0E41H         LINE#         186
+  C:0E41H         LINE#         187
+  C:0E41H         LINE#         188
+  -------         ENDPROC       SMBUS_BEGIN
+  -------         PROC          _SMBUS_WRITE
+  D:0007H         SYMBOL        c
+  C:0DA5H         LINE#         191
+  C:0DA5H         LINE#         192
+  C:0DA5H         LINE#         194
+  C:0DA7H         LINE#         195
+  C:0DA9H         LINE#         196
+  C:0DACH         LINE#         199
+  C:0DAEH         LINE#         200
+  C:0DB1H         LINE#         201
+  C:0DB3H         LINE#         202
+  C:0DB6H         LINE#         205
+  C:0DB8H         LINE#         206
+  C:0DBAH         LINE#         207
+  C:0DBDH         LINE#         208
+  -------         ENDPROC       _SMBUS_WRITE
+  -------         PROC          ADC_ISR
+  C:0E24H         LINE#         215
+  C:0E24H         LINE#         217
+  C:0E26H         LINE#         218
+  C:0E2CH         LINE#         219
+  -------         ENDPROC       ADC_ISR
+  -------         PROC          TIMER2_ISR
+  -------         DO            
+  D:0022H         SYMBOL        x
+  -------         ENDDO         
+  C:0CE5H         LINE#         221
+  C:0CF6H         LINE#         224
+  C:0CF8H         LINE#         225
+  C:0CFDH         LINE#         226
+  C:0CFDH         LINE#         227
+  C:0D00H         LINE#         228
+  C:0D08H         LINE#         229
+  C:0D11H         LINE#         230
+  C:0D11H         LINE#         232
+  C:0D14H         LINE#         233
+  C:0D14H         LINE#         234
+  C:0D16H         LINE#         235
+  C:0D18H         LINE#         236
+  C:0D18H         LINE#         237
+  -------         ENDPROC       TIMER2_ISR
+  -------         ENDMOD        TONEGEN
+
+  -------         MODULE        ?C?CLDPTR
+  C:0B5CH         PUBLIC        ?C?CLDPTR
+  -------         ENDMOD        ?C?CLDPTR
+
+  -------         MODULE        ?C?CSTPTR
+  C:0B75H         PUBLIC        ?C?CSTPTR
+  -------         ENDMOD        ?C?CSTPTR
+
+  -------         MODULE        PRINTF
+  D:0008H         PUBLIC        ?_PRINTF517?BYTE
+  D:0008H         PUBLIC        ?_PRINTF?BYTE
+  D:0008H         PUBLIC        ?_SPRINTF517?BYTE
+BL51 BANKED LINKER/LOCATER V6.22            12/09/2014  16:51:56  PAGE 7
+
+
+  D:0008H         PUBLIC        ?_SPRINTF?BYTE
+  C:0862H         PUBLIC        _PRINTF
+  C:0862H         PUBLIC        _PRINTF517
+  C:085CH         PUBLIC        _SPRINTF
+  C:085CH         PUBLIC        _SPRINTF517
+  -------         ENDMOD        PRINTF
+
+  -------         MODULE        ?C?CLDOPTR
+  C:0B87H         PUBLIC        ?C?CLDOPTR
+  -------         ENDMOD        ?C?CLDOPTR
+
+  -------         MODULE        ?C?PLDIIDATA
+  C:0BB4H         PUBLIC        ?C?PLDIIDATA
+  -------         ENDMOD        ?C?PLDIIDATA
+
+  -------         MODULE        ?C?CCASE
+  C:0BC4H         PUBLIC        ?C?CCASE
+  -------         ENDMOD        ?C?CCASE
+
+  -------         MODULE        PUTCHAR
+  C:0D64H         PUBLIC        _PUTCHAR
+  -------         ENDMOD        PUTCHAR
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_EVENT_INIT?TONEGEN
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_PUT_CHAR_?TONEGEN
+
+******************************************************************************
+>> 
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 01B6H BYTE (21%) *
+>> 
+******************************************************************************
+>> 
+
+Program Size: data=76.1 xdata=0 code=1623
+LINK/LOCATE RUN COMPLETE.  2 WARNING(S),  0 ERROR(S)
