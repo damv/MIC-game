@@ -3,12 +3,12 @@
 // SDA: P1.0
 // SCL: P1.1
 
-#define GYRO_ADR        0x69
-#define ACCE_ADR        0x53
-#define MAGN_ADR        0x1E
+#define GYRO_ADDR    0x69   // I2C Addresses
+#define ACCE_ADDR    0x53
+#define MAGN_ADDR    0x1E
 
-#define  WRITE          0x00           // SMBus WRITE command
-#define  READ           0x01           // SMBus READ command
+#define WRITE       0x00    // SMBus WRITE command
+#define READ        0x01    // SMBus READ command
 
 
 void SMBUS_init()
@@ -18,7 +18,6 @@ void SMBUS_init()
     // slave inhibited
     // clock source : timer 1 overflow
     SMB0CF = 0xC1;
-
 }
 
 void SMBUS_begin(unsigned char address)
