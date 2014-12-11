@@ -92,8 +92,8 @@ void PORT_init()
     XBR1 = 0x41;
     P0SKIP = 0xCC;
     P0MDOUT |= 0x10; // TX in push / pull
-    P3MDOUT |= 0x08;
     P1MDOUT |= 0x01;
+    P3MDOUT |= 0x08;
 }
 
 void SYSCLK_init()

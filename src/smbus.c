@@ -1,3 +1,8 @@
+// GY-80
+// Pin configuration
+// SCL: P1.1
+// SDA: P1.0
+
 void SMBUS_init()
 {
     SMB0CF = 0xC1;
