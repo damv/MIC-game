@@ -3,9 +3,13 @@
 // SDA: P1.0
 // SCL: P1.1
 
-unsigned char GYRO_ADR = 0x69;
-unsigned char ACCE_ADR = 0x53;
-unsigned char MAGN_ADR = 0x1E;
+#define GYRO_ADR        0x69
+#define ACCE_ADR        0x53
+#define MAGN_ADR        0x1E
+
+#define  WRITE          0x00           // SMBus WRITE command
+#define  READ           0x01           // SMBus READ command
+
 
 void SMBUS_init()
 {
@@ -24,6 +28,26 @@ void SMBUS_begin(unsigned char address)
 }
 
 void SMBUS_write(unsigned char address, unsigned char value)
+{
+    // start sequence
+    STA = 1;            // START flag
+    SI = 0;             // SMBUS0 interrupt flag
+    while (SI == 0);    // START aknowledge (?)
+    STA = 0;
+
+
+    // send address 
+    SMB0DAT = address;  // SMBUS DATA
+    SI = 0;
+    while (SI == 0);
+
+    // send char
+    SMB0DAT = value;
+    SI = 0;
+    while (SI == 0);
+}
+
+void SMBUS_read(unsigned char address, unsigned char value)
 {
     // start sequence
     STA = 1;            // START flag
