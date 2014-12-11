@@ -50,11 +50,12 @@ void main()
     EA = 1; // enable global interrupts
     
     SMBUS_begin();
+    
     while(1)
     {
         if (event_check(&top_second))
         {
-
+            // block called each second
         }
     }
 }
@@ -99,6 +100,10 @@ void PORT_init()
     XBR0      = 0x0D;
     XBR1      = 0x70;
 }
+
+//-----------------------------------------------------------------------------
+// Timer 2 and uART logs
+//-----------------------------------------------------------------------------
 
 void SYSCLK_init()
 {
