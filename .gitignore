@@ -27,3 +27,11 @@
 *.i*86
 *.x86_64
 *.hex
+
+# Keil-generated files
+*.#1
+*.#2
+*.#3
+*.LST
+*.M51
+cyglink.txt
