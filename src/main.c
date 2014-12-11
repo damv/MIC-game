@@ -19,7 +19,7 @@ sbit SW2 = P0^7; // SW2='0' means switch pressed
 static int second = 0;
 
 //-----------------------------------------------------------------------------
-// Function PROTOTYPES
+// Function prototypes
 //-----------------------------------------------------------------------------
 void UART0_init(void);
 void SYSCLK_init(void);
@@ -120,10 +120,10 @@ void TIMER2_init(int counts)
    TR2     = 1; // start Timer2
 }
 
-///////////////////////////
-// INTERRUPTS
-///////////////////////////
 
+//-----------------------------------------------------------------------------
+// Interrupts
+//-----------------------------------------------------------------------------
 void TIMER2_ISR (void) interrupt 5
 {
     static unsigned char x = 5;
@@ -135,9 +135,9 @@ void TIMER2_ISR (void) interrupt 5
         event_trigger(&top_second);
     }
 
-    if (TF2H == 1) 
+    if (TF2H == 1)
     {
-        TF2H = 0;                               // clear Timer2 interrupt flag
-        LED = ~LED;                             // change state of LED
+        TF2H = 0; // clear Timer2 interrupt flag
+        LED = ~LED; // change state of LED
     }
 }
