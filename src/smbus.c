@@ -1,14 +1,11 @@
 // GY-80
 // Pin configuration
-// SCL: P1.1
 // SDA: P1.0
+// SCL: P1.1
 
 unsigned char GYRO_ADR = 0x69;
 unsigned char ACCE_ADR = 0x53;
 unsigned char MAGN_ADR = 0x1E;
-
-unsigned char I2C_SCL_PIN =;
-unsigned char I2C_SDA_PIN =;
 
 void SMBUS_init()
 {
@@ -29,9 +26,9 @@ void SMBUS_begin(unsigned char address)
 void SMBUS_write(unsigned char address, unsigned char value)
 {
     // start sequence
-    STA = 1;    // START flag
-    SI = 0;     // SMBUS0 interrupt flag
-    while (SI == 0);
+    STA = 1;            // START flag
+    SI = 0;             // SMBUS0 interrupt flag
+    while (SI == 0);    // START aknowledge (?)
     STA = 0;
 
 
