@@ -13,6 +13,10 @@ sfr16 TMR2 = 0xcc; // Timer2 counter
 sfr16 ADC0 = 0xbd;
 sfr16 PCA0CP0 = 0xFB;
 
+
+
+
+
 sbit LED = P3^3; // LED='1' means ON
 sbit SW2 = P0^7; // SW2='0' means switch pressed
 
@@ -86,14 +90,35 @@ void UART0_init()
     SBUF0 = '\n';
 }
 
-void PORT_init()
+// Peripheral specific initialization functions,
+// Called from the Init_Device() function
+void Port_Init()
 {
-    XBR0 = 0x05;
-    XBR1 = 0x41;
-    P0SKIP = 0xCC;
-    P0MDOUT |= 0x10; // TX in push / pull
-    P1MDOUT |= 0x01;
-    P3MDOUT |= 0x08;
+    // P0.0  -  Skipped,     Open-Drain, Digital
+    // P0.1  -  Skipped,     Open-Drain, Digital
+    // P0.2  -  Skipped,     Open-Drain, Digital
+    // P0.3  -  Skipped,     Open-Drain, Digital
+    // P0.4  -  TX0 (UART0), Open-Drain, Digital
+    // P0.5  -  RX0 (UART0), Open-Drain, Digital
+    // P0.6  -  Skipped,     Open-Drain, Digital
+    // P0.7  -  Skipped,     Open-Drain, Digital
+
+    // P1.0  -  SDA (SMBus), Open-Drain, Digital
+    // P1.1  -  SCL (SMBus), Open-Drain, Digital
+    // P1.2  -  SYSCLK,      Open-Drain, Digital
+    // P1.3  -  T0 (Timr0),  Open-Drain, Digital
+    // P1.4  -  T1 (Timr1),  Open-Drain, Digital
+    // P1.5  -  Unassigned,  Open-Drain, Digital
+    // P1.6  -  Unassigned,  Open-Drain, Digital
+    // P1.7  -  Unassigned,  Open-Drain, Digital
+    // P2.0  -  Unassigned,  Open-Drain, Digital
+    // P2.1  -  Unassigned,  Open-Drain, Digital
+    // P2.2  -  Unassigned,  Open-Drain, Digital
+    // P2.3  -  Unassigned,  Open-Drain, Digital
+
+    P0SKIP    = 0xCF;
+    XBR0      = 0x0D;
+    XBR1      = 0x70;
 }
 
 void SYSCLK_init()
