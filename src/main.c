@@ -59,27 +59,6 @@ void main()
     }
 }
 
-void event_init(event *e)
-{
-    *e = 0;
-}
-
-void event_trigger(event *e)
-{
-    *e = 1;
-}
-
-int event_check(event *e)
-{
-    if (*e == 1) {
-        *e = 0;
-        return 1;
-    }
-    else {
-        return 0;
-    }
-}
-
 void UART0_init()
 {
     TH1 = -213;
@@ -90,9 +69,8 @@ void UART0_init()
     SBUF0 = '\n';
 }
 
-// Peripheral specific initialization functions,
-// Called from the Init_Device() function
-void Port_Init()
+// Peripheral specific initialization function
+void PORT_init()
 {
     // P0.0  -  Skipped,     Open-Drain, Digital
     // P0.1  -  Skipped,     Open-Drain, Digital
@@ -111,11 +89,12 @@ void Port_Init()
     // P1.5  -  Unassigned,  Open-Drain, Digital
     // P1.6  -  Unassigned,  Open-Drain, Digital
     // P1.7  -  Unassigned,  Open-Drain, Digital
-    // P2.0  -  Unassigned,  Open-Drain, Digital
-    // P2.1  -  Unassigned,  Open-Drain, Digital
+    // P2.0  -  MOSI,        Push-Pull, Digital
+    // P2.1  -  MISO,        Push-Pull, Digital
     // P2.2  -  Unassigned,  Open-Drain, Digital
     // P2.3  -  Unassigned,  Open-Drain, Digital
 
+    P2MDOUT   = 0x03;
     P0SKIP    = 0xCF;
     XBR0      = 0x0D;
     XBR1      = 0x70;
@@ -143,6 +122,27 @@ void TIMER2_init(int counts)
    TMR2    = 0xffff; // set to reload immediately
    ET2     = 1; // enable Timer2 interrupts
    TR2     = 1; // start Timer2
+}
+
+void event_init(event *e)
+{
+    *e = 0;
+}
+
+void event_trigger(event *e)
+{
+    *e = 1;
+}
+
+int event_check(event *e)
+{
+    if (*e == 1) {
+        *e = 0;
+        return 1;
+    }
+    else {
+        return 0;
+    }
 }
 
 

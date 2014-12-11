@@ -4,6 +4,9 @@
 // MISO: P2.1
 // SCK: P2.2
 
+// SPI mode 0
+// CPOL 0, CPHA 1
+
 void SPI_init()
 {
 
