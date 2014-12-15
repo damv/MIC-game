@@ -55,6 +55,7 @@ void main()
     TIMER2_init(SYSCLK / 12 / 500); 
     UART0_init();
     SMBUS_init();
+    SMBus_begin();
     screen_init();
 
     EA = 1; // enable global interrupts
