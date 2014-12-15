@@ -10,12 +10,11 @@ event top_second;
 sfr16 TMR2RL = 0xca; // Timer2 reload value
 sfr16 TMR2 = 0xcc; // Timer2 counter
 
-sfr16 ADC0 = 0xbd;
 sfr16 PCA0CP0 = 0xFB;
 
-
-
-
+sbit SPI_MISO = P2^0;
+sbit SPI_MOSI = P2^1;
+sbit SPI_SCK = P2^2;
 
 sbit LED = P3^3; // LED='1' means ON
 sbit SW2 = P0^7; // SW2='0' means switch pressed
@@ -54,7 +53,6 @@ void main()
     {
         if (event_check(&top_second))
         {
-
         }
     }
 }
@@ -91,10 +89,10 @@ void PORT_init()
     // P1.7  -  Unassigned,  Open-Drain, Digital
     // P2.0  -  MOSI,        Push-Pull, Digital
     // P2.1  -  MISO,        Push-Pull, Digital
-    // P2.2  -  Unassigned,  Open-Drain, Digital
+    // P2.2  -  SCK,         Push-Pull, Digital
     // P2.3  -  Unassigned,  Open-Drain, Digital
 
-    P2MDOUT   = 0x03;
+    P2MDOUT   = 0x07;
     P0SKIP    = 0xCF;
     XBR0      = 0x0D;
     XBR1      = 0x70;
