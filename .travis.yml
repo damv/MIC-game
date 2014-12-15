@@ -17,5 +17,5 @@ install:
 # bl51 is your Keil linker
 script:
   - cd src
-  - c51 main.c spi.c smbus.c
-  - bl51 main.OBJ spi.OBJ smbus.OBJ
+  - c51 main.c
+  - bl51 main.OBJ
