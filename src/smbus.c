@@ -5,12 +5,15 @@
 #include "smbus.h"
 #include "../lib/c8051f310.h"
 
-#define GYRO_ADDR    0x69   // I2C Addresses
-#define ACCE_ADDR    0x53
-#define MAGN_ADDR    0x1E
+#define GYRO_ADDR   0x69   // I2C Addresses
+#define ACCE_ADDR   0x53
+#define MAGN_ADDR   0x1E
 
-#define POWER_CTL   0x2D
+#define POWER_CTRL  0x2D   // ACCE Registers
+#define DATAX0      0x32
 
+#define READ        0x01
+#define WRITE       0x00
 
 void SMBUS_init()
 {
@@ -23,22 +26,42 @@ void SMBUS_init()
 
 void ACCE_begin()
 {
-    SMBUS_start
+    SMBUS_start();
 
-    // send address R/W = 0
-    SMB0DAT = address | READ;  // SMBUS_DATA > ADRESS, R/W = 0
-    SI = 0;
-    while (SI == 0);            // Wait for acknowledge
-    
-    // POWER_CTRL register
-    SMB0DAT = POWER_CTL | READ;  // SMBUS_DATA > ADRESS, R/W = 0
-    SI = 0;
-    while (SI == 0);            // Wait for aknowledge
+    // Power ON
+    SMBUS_write_address(ACCE_ADDR, WRITE);
+    SMBUS_write_value(POWER_CTRL);
+    SMBUS_write_value(0x08);    // valeur ?????????????????
+    // SMBUS_stop() ???????????????????????????????????????
+}
 
-    // value : 0x08
-    SMB0DAT = 0x08 | READ;  // SMBUS_DATA > ADRESS, R/W = 0
-    SI = 0;
-    while (SI == 0);            // Wait for aknowledge
+void ACCE_read()
+{
+    unsigned char ACCE_X0;
+    unsigned char ACCE_X1;
+    unsigned char ACCE_Y0;
+    unsigned char ACCE_Y1;
+    unsigned char ACCE_Z0
+    unsigned char ACCE_Z1;
+
+    // SMBUS_start() ???????????????????????????????????????
+
+    SMBUS_write_address(ACCE_ADDR, READ);
+    SMBUS_write_value(DATAX0);
+
+    // read char
+    ACCE_X0 = SMB0DAT;
+    ACK = 1;
+    ACCE_X1 = SMB0DAT;
+    ACK = 1;
+    ACCE_Y0 = SMB0DAT;
+    ACK = 1;
+    ACCE_Y1 = SMB0DAT;
+    ACK = 1;
+    ACCE_Z0 = SMB0DAT;
+    ACK = 1;
+    ACCE_Z1 = SMB0DAT;
+    ACK = 1; // OU ACK = 0 ??????????????????????????????????
 }
 
 void SMBUS_start()
@@ -51,16 +74,16 @@ void SMBUS_start()
 }
 
 
-void SMBUS_stop(unsigned char address)
+void SMBUS_stop()
 {
     // stop sequence
     STO = 1;            // STOP flag
     SI = 0;             // SMBUS0 interrupt flag
-    while (SI == 0);    // STOP acknowledge (?)
+    while (SI == 0);    // STOP acknowledge
     STO = 0;
 }
 
-void SMBUS_write_address(unsigned char value, unsigned char RW)
+void SMBUS_write_address(unsigned char address, unsigned char RW)
 {
     // send address
     SMB0DAT = address | RW;
@@ -85,7 +108,7 @@ void SMBUS_read(unsigned char address, unsigned char *readByte, bit isLastRead)
     // STA = 0;
 
     // send address RW = 1
-    SMB0DAT = address | 0x01;    // SMBUS_DATA > ADRESS, R/W = 1
+    SMB0DAT = address | READ;    // SMBUS_DATA > ADRESS, R/W = 1
 
     SI = 0;
     while (SI == 0);                // Wait for acknowledge
