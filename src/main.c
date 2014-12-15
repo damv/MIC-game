@@ -65,7 +65,7 @@ void main()
     {
         // SMBUS TEST
         SMBUS_write(ACCE_ADDR, 0x32); // DATAX
-        SMBUS_read(ACCE_ADDR, &readByte, 0);
+        SMBUS_read(ACCE_ADDR, &readByte, 1);
 
         T0_Wait_ms(10);
 
