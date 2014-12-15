@@ -7,6 +7,14 @@
 // SPI mode 0
 // CPOL 0, CPHA 0
 
+#include "spi.h"
+
+void delay(int ms)
+{
+    // TODO
+    int a = ms;
+}
+
 void screen_init()
 {
     // taken from https://github.com/adafruit/Adafruit-HX8340B/blob/master/Adafruit_HX8340B.cpp
@@ -111,11 +119,11 @@ void screen_init()
 
 void SPI_write(unsigned short c)
 {
-    data = c & 1
-    sck = 1
-    sck = 0
-    data = (c >> 1) & 1
-    sck = 1
+    // data = c & 1
+    // sck = 1
+    // sck = 0
+    // data = (c >> 1) & 1
+    // sck = 1
 
-    sck = 0
+    // sck = 0
 }

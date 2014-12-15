@@ -1,6 +1,8 @@
-#include <c8051f310.h>  
-#include <smbus.h> 
 #include <stdio.h>
+#include "c8051f310.h"  
+
+#include "smbus.h" 
+#include "spi.h"
 
 #define SYSCLK 24500000 / 8         // SYSCLK frequency in Hz
 
@@ -45,6 +47,7 @@ void main()
     TIMER2_init(SYSCLK / 12 / 500); 
     UART0_init();
     SMBUS_init();
+    screen_init();
 
     EA = 1; // enable global interrupts
     
