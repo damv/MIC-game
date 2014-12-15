@@ -4,6 +4,10 @@
 
 #define SYSCLK 24500000 / 8         // SYSCLK frequency in Hz
 
+#define GYRO_ADDR    0x69   // I2C Addresses
+#define ACCE_ADDR    0x53
+#define MAGN_ADDR    0x1E
+
 typedef unsigned char event;
 event top_second;
 
@@ -51,9 +55,18 @@ void main()
     printf("SMBus initialization");
     SMBUS_begin();
 
-    
+    unsigned char readByte = 0x00;
+
     while(1)
     {
+        // SMBUS TEST
+        void SMBUS_write(ACCE_ADDR, 0x32); // DATAX
+
+        void SMBUS_read(&readByte, 0);
+
+        T0_Wait_ms (10);
+
+
         if (event_check(&top_second))
         {
             // block called each second

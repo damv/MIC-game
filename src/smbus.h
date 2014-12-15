@@ -14,7 +14,6 @@ void SMBUS_begin();
 void SMBUS_write(unsigned char address, unsigned char value);
 
 // READ
-// wip
-void SMBUS_read(unsigned char address, unsigned char value);
+void SMBUS_read(unsigned char *readByte,  bit isLastRead);
 
 #endif
