@@ -64,6 +64,7 @@
 
 void delay(int ms);
 void screen_init();
-void SPI_write(unsigned short c);
+void SPI_writeCommand(unsigned short c);
+void SPI_writeData(unsigned short c);
 
 #endif

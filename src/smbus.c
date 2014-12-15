@@ -67,11 +67,11 @@ void SMBUS_write(unsigned char address, unsigned char value)
 
 void SMBUS_read(unsigned char address, unsigned char *readByte, bit isLastRead)
 {
-    // restart sequence ???
-    STA = 1;            // START flag
-    SI = 0;             // SMBUS0 interrupt flag
-    while (SI == 0);    // START acknowledge (?)
-    STA = 0;
+    // // restart sequence ???
+    // STA = 1;            // START flag
+    // SI = 0;             // SMBUS0 interrupt flag
+    // while (SI == 0);    // START acknowledge (?)
+    // STA = 0;
 
     // send address R/W = 1
     SMB0DAT = address | WRITE;    // SMBUS_DATA > ADRESS, R/W = 1
