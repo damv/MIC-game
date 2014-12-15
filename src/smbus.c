@@ -15,8 +15,8 @@
 #define POWER_CTRL  0x2D
 #define DATAX0      0x32
 
-#define READ        0x01
 #define WRITE       0x00
+#define READ        0x01
 
 void SMBUS_init()
 {
