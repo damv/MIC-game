@@ -9,6 +9,7 @@
 
 #define WRITE       0x00    // SMBus WRITE command
 #define READ        0x01    // SMBus READ command
+SMB0DAT
 
 
 void SMBUS_init()
@@ -35,33 +36,31 @@ void SMBUS_write(unsigned char address, unsigned char value)
     STA = 0;
 
 
-    // send address 
-    SMB0DAT = address;  // SMBUS DATA
+    // send address R/W = 0
+    SMB0DAT = (address <<1) | 0;  // SMBUS_DATA > ADRESS, R/W = 0
     SI = 0;
-    while (SI == 0);
+    while (SI == 0);              // Wait for aknowledge
 
     // send char
-    SMB0DAT = value;
+    SMB0DAT = value;              // SMBUS DATA
     SI = 0;
-    while (SI == 0);
+    while (SI == 0);             // Wait for aknowledge
 }
 
-void SMBUS_read(unsigned char address, unsigned char value)
+void SMBUS_read(unsigned char *readByte, bit isLastRead)
 {
-    // start sequence
+    // restart sequence ???
     STA = 1;            // START flag
     SI = 0;             // SMBUS0 interrupt flag
     while (SI == 0);    // START aknowledge (?)
     STA = 0;
 
-
-    // send address 
-    SMB0DAT = address;  // SMBUS DATA
+    // send address R/W = 1
+    SMB0DAT = (address <<1) | 1;    // SMBUS_DATA > ADRESS, R/W = 1
     SI = 0;
-    while (SI == 0);
+    while (SI == 0);                // Wait for aknowledge
 
-    // send char
-    SMB0DAT = value;
-    SI = 0;
-    while (SI == 0);
+    // read char
+    readByte = SMB0DAT;
+    ACK = isLastRead;
 }

@@ -49,7 +49,9 @@ void main()
 
     EA = 1; // enable global interrupts
     
+    printf("SMBus initialization");
     SMBUS_begin();
+
     
     while(1)
     {
