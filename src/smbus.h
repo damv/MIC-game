@@ -7,7 +7,7 @@ void SMBUS_init();
 
 // BEGIN
 // Initiate connection
-void SMBUS_begin();
+void SMBUS_begin(unsigned char address);
 
 // WRITE
 // Send via bus the specified value to the device corresponding to the specified address

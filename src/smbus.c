@@ -35,7 +35,6 @@ void SMBUS_write(unsigned char address, unsigned char value)
     while (SI == 0);    // START aknowledge (?)
     STA = 0;
 
-
     // send address R/W = 0
     SMB0DAT = address | 0x00;  // SMBUS_DATA > ADRESS, R/W = 0
     SI = 0;
@@ -62,7 +61,8 @@ void SMBUS_read(unsigned char address, unsigned char *readByte, bit isLastRead)
     STA = 0;
 
     // send address R/W = 1
-    SMB0DAT = address | 0x01;       // SMBUS_DATA > ADRESS, R/W = 1
+    SMB0DAT = address | 0x01;    // SMBUS_DATA > ADRESS, R/W = 1
+
     SI = 0;
     while (SI == 0);                // Wait for aknowledge
 

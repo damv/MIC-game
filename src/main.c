@@ -45,7 +45,9 @@ int event_check(event *e);
 //-----------------------------------------------------------------------------
 void main()
 {
-    unsigned char readByte = 0x00;
+    unsigned char readByte0 = 0x00;
+    unsigned char readByte1 = 0x00;
+    bit isLastBitRead = 1;
 
     PCA0MD &= ~0x40; // disable watchdog timer
     SYSCLK_init();
@@ -58,14 +60,18 @@ void main()
     EA = 1; // enable global interrupts
     
     printf("SMBus initialization");
-    SMBUS_begin();
-
 
     while(1)
     {
         // SMBUS TEST
-        SMBUS_write(ACCE_ADDR, 0x32); // DATAX
-        SMBUS_read(ACCE_ADDR, &readByte, 1);
+        SMBUS_write(ACCE_ADDR, 0x32); // DATAX 0
+        SMBUS_read(ACCE_ADDR, &readByte0, isLastBitRead);
+
+        printf(
+            "Accel X: %x %x\n",
+            (unsigned)(unsigned char)readByte0,
+            (unsigned)(unsigned char)readByte1
+        );
 
         T0_Wait_ms(10);
 

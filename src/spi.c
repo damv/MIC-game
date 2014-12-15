@@ -123,8 +123,15 @@ void screen_init()
 
 void SPI_write(unsigned short c)
 {
-    unsigned char i;
-    for (i = 7; i > 0; i++) {
+    char i = 7;
+    
+    // send 1 as first bit
+    MOSI = 1;
+    SCK = 1;
+    SCK = 0;
+
+    // send actual data
+    for (i = 7; i >= 0; i--) {
         MOSI = (c >> i) & 1; // send data through MOSI
         SCK = 1; // clock tick
         SCK = 0; // clock tock
