@@ -7,12 +7,16 @@
 // SPI mode 0
 // CPOL 0, CPHA 0
 
+#include "../lib/c8051f310.h"
 #include "spi.h"
+#include "utils.h"
+
+sbit MOSI = P2^0;
+sbit SCK = P2^2;
 
 void delay(int ms)
 {
-    // TODO
-    int a = ms;
+    T0_Wait_ms(ms);
 }
 
 void screen_init()
@@ -119,11 +123,10 @@ void screen_init()
 
 void SPI_write(unsigned short c)
 {
-    // data = c & 1
-    // sck = 1
-    // sck = 0
-    // data = (c >> 1) & 1
-    // sck = 1
-
-    // sck = 0
+    unsigned char i;
+    for (i = 7; i > 0; i++) {
+        MOSI = (c >> i) & 1; // send data through MOSI
+        SCK = 1; // clock tick
+        SCK = 0; // clock tock
+    }
 }

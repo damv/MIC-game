@@ -1,10 +1,10 @@
 #include <stdio.h>
-#include "c8051f310.h"  
+#include "../lib/c8051f310.h"  
 
-#include "smbus.h" 
+#include "smbus.h"
 #include "spi.h"
+#include "utils.h"
 
-#define SYSCLK 24500000 / 8         // SYSCLK frequency in Hz
 
 #define GYRO_ADDR    0x69   // I2C Addresses
 #define ACCE_ADDR    0x53
@@ -45,6 +45,8 @@ int event_check(event *e);
 //-----------------------------------------------------------------------------
 void main()
 {
+    unsigned char readByte = 0x00;
+
     PCA0MD &= ~0x40; // disable watchdog timer
     SYSCLK_init();
     PORT_init();
@@ -58,17 +60,14 @@ void main()
     printf("SMBus initialization");
     SMBUS_begin();
 
-    unsigned char readByte = 0x00;
 
     while(1)
     {
         // SMBUS TEST
-        void SMBUS_write(ACCE_ADDR, 0x32); // DATAX
+        SMBUS_write(ACCE_ADDR, 0x32); // DATAX
+        SMBUS_read(ACCE_ADDR, &readByte, 0);
 
-        void SMBUS_read(ACCE_ADDR, &readByte, 0);
-
-        T0_Wait_ms (10);
-
+        T0_Wait_ms(10);
 
         if (event_check(&top_second))
         {
@@ -166,7 +165,6 @@ int event_check(event *e)
         return 0;
     }
 }
-
 
 //-----------------------------------------------------------------------------
 // Interrupts

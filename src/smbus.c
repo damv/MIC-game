@@ -3,7 +3,7 @@
 // SDA: P1.0
 // SCL: P1.1
 #include "smbus.h"
-#include "c8051f310.h"
+#include "../lib/c8051f310.h"
 
 #define GYRO_ADDR    0x69   // I2C Addresses
 #define ACCE_ADDR    0x53
