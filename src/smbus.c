@@ -32,24 +32,18 @@ void SMBUS_write(unsigned char address, unsigned char value)
     // start sequence
     STA = 1;            // START flag
     SI = 0;             // SMBUS0 interrupt flag
-    while (SI == 0);    // START aknowledge (?)
+    while (SI == 0);    // START acknowledge (?)
     STA = 0;
 
     // send address R/W = 0
     SMB0DAT = address | 0x00;  // SMBUS_DATA > ADRESS, R/W = 0
     SI = 0;
-    while (SI == 0);            // Wait for aknowledge
+    while (SI == 0);            // Wait for acknowledge
 
     // send char
     SMB0DAT = value;            // SMBUS DATA
     SI = 0;
-    while (SI == 0);            // Wait for aknowledge
-
-    // stop sequence
-    STO = 1;            // STOP flag
-    SI = 0;             // SMBUS0 interrupt flag
-    while (SI == 0);    // STOP aknowledge (?)
-    STO = 0;
+    while (SI == 0);            // Wait for acknowledge
 }
 
 void SMBUS_read(unsigned char address, unsigned char *readByte, bit isLastRead)
@@ -57,20 +51,14 @@ void SMBUS_read(unsigned char address, unsigned char *readByte, bit isLastRead)
     // restart sequence ???
     STA = 1;            // START flag
     SI = 0;             // SMBUS0 interrupt flag
-    while (SI == 0);    // START aknowledge (?)
+    while (SI == 0);    // START acknowledge (?)
     STA = 0;
 
     // send address R/W = 1
     SMB0DAT = address | 0x01;    // SMBUS_DATA > ADRESS, R/W = 1
 
     SI = 0;
-    while (SI == 0);                // Wait for aknowledge
-
-    // stop sequence
-    STO = 1;            // STOP flag
-    SI = 0;             // SMBUS0 interrupt flag
-    while (SI == 0);    // STOP aknowledge (?)
-    STO = 0;
+    while (SI == 0);                // Wait for acknowledge
 
     // read char
     *readByte = SMB0DAT;
