@@ -47,6 +47,7 @@ void main()
 {
     unsigned char readByte0 = 0x00;
     unsigned char readByte1 = 0x00;
+    bit isLastBitRead = 1;
 
     PCA0MD &= ~0x40; // disable watchdog timer
     SYSCLK_init();
@@ -64,9 +65,7 @@ void main()
     {
         // SMBUS TEST
         SMBUS_write(ACCE_ADDR, 0x32); // DATAX 0
-        SMBUS_read(ACCE_ADDR, &readByte0, 0);
-        SMBUS_write(ACCE_ADDR, 0x33); // DATAX 1
-        SMBUS_read(ACCE_ADDR, &readByte1, 0);
+        SMBUS_read(ACCE_ADDR, &readByte0, isLastBitRead);
 
         printf(
             "Accel X: %x %x\n",
