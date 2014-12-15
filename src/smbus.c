@@ -2,6 +2,8 @@
 // Pin configuration
 // SDA: P1.0
 // SCL: P1.1
+#include "smbus.h"
+#include "c8051f310.h"
 
 #define GYRO_ADDR    0x69   // I2C Addresses
 #define ACCE_ADDR    0x53
@@ -9,8 +11,6 @@
 
 #define WRITE       0x00    // SMBus WRITE command
 #define READ        0x01    // SMBus READ command
-SMB0DAT
-
 
 void SMBUS_init()
 {
@@ -47,7 +47,7 @@ void SMBUS_write(unsigned char address, unsigned char value)
     while (SI == 0);            // Wait for aknowledge
 }
 
-void SMBUS_read(unsigned char *readByte, bit isLastRead)
+void SMBUS_read(unsigned char address, unsigned char *readByte, bit isLastRead)
 {
     // restart sequence ???
     STA = 1;            // START flag
@@ -61,6 +61,6 @@ void SMBUS_read(unsigned char *readByte, bit isLastRead)
     while (SI == 0);                // Wait for aknowledge
 
     // read char
-    readByte = SMB0DAT;
+    *readByte = SMB0DAT;
     ACK = isLastRead;
 }

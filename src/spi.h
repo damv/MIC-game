@@ -62,7 +62,8 @@
 #define HX8340B_N_SETGAMMAP               (0xC2)
 #define HX8340B_N_SETGAMMAN               (0xC3)
 
-void SPI_init();
+void delay(int ms);
+void screen_init();
 void SPI_write(unsigned short c);
 
 #endif
