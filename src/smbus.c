@@ -38,6 +38,7 @@ void SMBUS_start()
 
 void SMBUS_stop()
 {
+    //test2
     // stop sequence
     STO = 1;            // STOP flag
     SI = 0;             // SMBUS0 interrupt flag
