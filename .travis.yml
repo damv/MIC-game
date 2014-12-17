@@ -21,4 +21,4 @@ script:
   - c51 smbus.c
   - c51 spi.c
   - c51 utils.c
-  - bl51 main.OBJ
+  - bl51 main.OBJ smbus.OBJ spi.OBJ utils.OBJ
