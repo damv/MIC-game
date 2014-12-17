@@ -18,4 +18,7 @@ install:
 script:
   - cd src
   - c51 main.c
+  - c51 smbus.c
+  - c51 spi.c
+  - c51 utils.c
   - bl51 main.OBJ
