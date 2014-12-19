@@ -31,8 +31,8 @@ void SMBUS_start()
 {
     // start sequence
     STA = 1;            // START flag
-    //SI = 0;             // SMBUS0 interrupt flag
-    while (STA == 0);    // START send
+    SI = 0;             // SMBUS0 interrupt flag
+    while (SI == 0);    // START send
     STA = 0;            // START flag OFF
 }
 
