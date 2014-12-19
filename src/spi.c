@@ -11,9 +11,6 @@
 #include "spi.h"
 #include "utils.h"
 
-sbit MOSI = P2^0;
-sbit SCK = P2^2;
-
 void _SPI_write(unsigned short c);
 
 void delay(int ms)
@@ -122,13 +119,28 @@ void screen_init()
     SPI_writeCommand(HX8340B_N_RAMWR);
 }
 
+void screen_reset()
+{
+    SCREEN_RST = 1;
+    delay(100);
+    SCREEN_RST = 0;
+    delay(50);
+    SCREEN_RST = 1;
+    delay(50);   
+}
+
+void SPI_init()
+{
+    SPI_SCK = 0;
+    SPI_MOSI = 0;
+}
 
 void SPI_writeCommand(unsigned short c)
 {
     // send 0 as first bit (command)
-    MOSI = 0;
-    SCK = 1;
-    SCK = 0;
+    SPI_MOSI = 0;
+    SPI_SCK = 1;
+    SPI_SCK = 0;
 
     // send actual data
     _SPI_write(c);
@@ -137,9 +149,9 @@ void SPI_writeCommand(unsigned short c)
 void SPI_writeData(unsigned short c)
 {
     // send 1 as first bit (data)
-    MOSI = 1;
-    SCK = 1;
-    SCK = 0;
+    SPI_MOSI = 1;
+    SPI_SCK = 1;
+    SPI_SCK = 0;
 
     // send actual data
     _SPI_write(c);
@@ -149,8 +161,11 @@ void _SPI_write(unsigned short c)
 {
     char i = 7;
     for (i = 7; i >= 0; i--) {
-        MOSI = (c >> i) & 1; // send data through MOSI
-        SCK = 1; // clock tick
-        SCK = 0; // clock tock
+        SPI_MOSI = (c >> i) & 1; // send data through MOSI
+        SPI_SCK = 1; // clock tick
+        SPI_SCK = 0; // clock tock
     }
+
+    SPI_MOSI = 0;
+    EA = 1;
 }
