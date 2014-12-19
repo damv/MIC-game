@@ -4,6 +4,7 @@
 // SCL: P1.1
 
 #include "smbus.h"
+#include "utils.h"
 #include "../lib/c8051f310.h"
 
 // I2C Addresses (7 bits)
@@ -18,13 +19,19 @@
 #define WRITE       0x00
 #define READ        0x01
 
+sbit SCL = P1^1;
+
 void SMBUS_init()
 {
-    // SMBUS CONFIGURATION
-    // smbus enabled
-    // slave inhibited
-    // clock source : timer 1 overflow
-    SMB0CF = 0xC1;
+    SMB0CF = 0x5D;                      // Use Timer1 overflows as SMBus clock
+                                       // source;
+                                       // Disable slave mode;
+                                       // Enable setup & hold time
+                                       // extensions;
+                                       // Enable SMBus Free timeout detect;
+                                       // Enable SCL low timeout detect;
+
+    SMB0CF |= 0x80;                     // Enable SMBus;
 }
 
 void SMBUS_start()
@@ -34,6 +41,8 @@ void SMBUS_start()
     SI = 0;             // SMBUS0 interrupt flag
     while (SI == 0);    // START send
     STA = 0;            // START flag OFF
+
+    delay(1);
 }
 
 void SMBUS_stop()
@@ -62,10 +71,32 @@ void SMBUS_write_value(unsigned char value)
     while (SI == 0);            // Wait for acknowledge
 }
 
+unsigned char SMBUS_read_value()
+{
+    SI = 0;
+    while (SI == 0);
+    return SMB0DAT;
+}
+
+void SMBUS_ack()
+{
+    ACK = 1;
+    SI = 0;
+    while (SI == 0);
+    ACK = 0;
+}
+
+void SMBUS_nack()
+{
+    ACK = 0;
+    SI = 0;
+    while (SI == 0);
+    ACK = 0;
+}
 
 void ACCE_begin()
-{
-    SMBUS_start();
+{   
+	SMBUS_start();
 
     // Power ON
     SMBUS_write_address(ACCE_ADDR, WRITE);
@@ -74,34 +105,40 @@ void ACCE_begin()
     //SMBUS_stop(); //?????????????????????????????????????????
 }
 
-void ACCE_read()
+void ACCE_read(
+    unsigned char* ACCE_X0,
+    unsigned char* ACCE_X1,
+    unsigned char* ACCE_Y0,
+    unsigned char* ACCE_Y1,
+    unsigned char* ACCE_Z0,
+    unsigned char* ACCE_Z1
+)
 {
-    unsigned char ACCE_X0;
-    unsigned char ACCE_X1;
-    unsigned char ACCE_Y0;
-    unsigned char ACCE_Y1;
-    unsigned char ACCE_Z0;
-    unsigned char ACCE_Z1;
-
     SMBUS_start(); //????????????????????????????????????????
 
-    SMBUS_write_address(ACCE_ADDR, READ);
+    SMBUS_write_address(ACCE_ADDR, WRITE);
     SMBUS_write_value(DATAX0); //????????????????????????????
 
-    // read char
-    ACCE_X0 = SMB0DAT;
-    ACK = 1;
-    ACCE_X1 = SMB0DAT;
-    ACK = 1;
-    ACCE_Y0 = SMB0DAT;
-    ACK = 1;
-    ACCE_Y1 = SMB0DAT;
-    ACK = 1;
-    ACCE_Z0 = SMB0DAT;
-    ACK = 1;
-    ACCE_Z1 = SMB0DAT;
-    ACK = 0; // OU ACK = 1 ??????????????????????????????????
+    delay(10);
 
-    SMBUS_stop();
+    SMBUS_start();
+
+    SMBUS_write_address(ACCE_ADDR, READ);
+    
+    // read char
+    *ACCE_X0 = SMBUS_read_value();
+    SMBUS_ack();
+    *ACCE_X1 = SMBUS_read_value();
+    SMBUS_ack();
+    *ACCE_Y0 = SMBUS_read_value();
+    SMBUS_ack();
+    *ACCE_Y1 = SMBUS_read_value();
+    SMBUS_ack();
+    *ACCE_Z0 = SMBUS_read_value();
+    SMBUS_ack();
+    *ACCE_Z1 = SMBUS_read_value();
+    SMBUS_nack();
+
+    // SMBUS_stop();    
 }
 

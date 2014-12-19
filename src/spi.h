@@ -71,8 +71,6 @@ sbit SPI_SCK = P2^2;
 #define HX8340B_N_SETGAMMAP               (0xC2)
 #define HX8340B_N_SETGAMMAN               (0xC3)
 
-void delay(int ms);
-
 void SPI_init();
 void SPI_writeCommand(unsigned short c);
 void SPI_writeData(unsigned short c);

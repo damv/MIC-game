@@ -5,6 +5,7 @@
 #include "spi.h"
 #include "utils.h"
 
+#define SYSCLK 24500000         // SYSCLK frequency in Hz
 
 #define GYRO_ADDR    0x69   // I2C Addresses
 #define ACCE_ADDR    0x53
@@ -29,6 +30,7 @@ static int second = 0;
 void UART0_init(void);
 void SYSCLK_init(void);
 void PORT_init(void);
+void TIMER1_init();
 void TIMER2_init(int counts);
 
 void Put_char_(unsigned char c);
@@ -44,32 +46,57 @@ void main()
     unsigned char i = 0;
     unsigned char readByte0 = 0x00;
     unsigned char readByte1 = 0x00;
-    bit isLastBitRead = 1;
+    
+    unsigned char ACCE_X0 = 0x10;
+    unsigned char ACCE_X1 = 0x10;
+    unsigned char ACCE_Y0 = 0x10;
+    unsigned char ACCE_Y1 = 0x10;
+    unsigned char ACCE_Z0 = 0x10;
+    unsigned char ACCE_Z1 = 0x10;
 
     PCA0MD &= ~0x40; // disable watchdog timer
+
     SYSCLK_init();
     PORT_init();
+    TIMER1_init();
     TIMER2_init(SYSCLK / 12 / 500); 
     UART0_init();
-    //SMBUS_init();
-    SPI_init();
-    screen_init();
 
-    //ACCE_begin();
+	printf("\n===========================\n");
+	printf("  Welcome\n");
+	printf("===========================\n");
+
+    SMBUS_init();
+	printf("- SMBUS intialized\n");
+    SPI_init();
+	printf("- SPI intialized\n");
+    screen_init();
+	printf("- Screen initialized\n");
+    ACCE_begin();
+	printf("- Accelerometer communication started\n");
 
     EA = 1; // enable global interrupts
-    
-    printf("SMBus initialization");
 
     while(1)
     {
         // SMBUS TEST
-        //ACCE_read();
+        ACCE_read(&ACCE_X0, &ACCE_X1, &ACCE_Y0, &ACCE_X1, &ACCE_Z0, &ACCE_Z1);
 
-        //T0_Wait_ms(10);
+        printf(
+            "Accelerometer : %d %d %d %d %d %d\n",
+            (unsigned long)(long)ACCE_X0,
+            (unsigned long)(long)ACCE_X1,
+            (unsigned long)(long)ACCE_Y0,
+            (unsigned long)(long)ACCE_Y1,
+            (unsigned long)(long)ACCE_Z0,
+            (unsigned long)(long)ACCE_Z1
+        );
 
-		screen_fill(i++);
-		T0_Wait_ms(10);
+        delay(1000);
+        
+        // i++;
+        // screen_fill(i);
+        // delay(10);
 
         if (event_check(&top_second))
         {
@@ -137,16 +164,6 @@ void Put_char_(unsigned char c)
     SBUF0 = c;
 }
 
-void TIMER2_init(int counts)
-{
-   TMR2CN  = 0x00; // Stop Timer2; Clear TF2;
-   CKCON  &= ~0x60; // Timer2 clocked based on T2XCLK;
-
-   TMR2RL  = -counts; // Init reload values
-   TMR2    = 0xffff; // set to reload immediately
-   ET2     = 1; // enable Timer2 interrupts
-   TR2     = 1; // start Timer2
-}
 
 void event_init(event *e)
 {
@@ -167,6 +184,56 @@ int event_check(event *e)
     else {
         return 0;
     }
+}
+
+//-----------------------------------------------------------------------------
+// Timer1_Init
+//-----------------------------------------------------------------------------
+//
+// Return Value : None
+// Parameters   : None
+//
+// Timer1 configured as the SMBus clock source as follows:
+// - Timer1 in 8-bit auto-reload mode
+// - SYSCLK or SYSCLK / 4 as Timer1 clock source
+// - Timer1 overflow rate => 3 * SMB_FREQUENCY
+// - The resulting SCL clock rate will be ~1/3 the Timer1 overflow rate
+// - Timer1 enabled
+//
+void TIMER1_init()
+{
+
+// Make sure the Timer can produce the appropriate frequency in 8-bit mode
+// Supported SMBus Frequencies range from 10kHz to 100kHz.  The CKCON register
+// settings may need to change for frequencies outside this range.
+#if ((SYSCLK/SMB_FREQUENCY/3) < 255)
+   #define SCALE 1
+      CKCON |= 0x08;                   // Timer1 clock source = SYSCLK
+#elif ((SYSCLK/SMB_FREQUENCY/4/3) < 255)
+   #define SCALE 4
+      CKCON |= 0x01;
+      CKCON &= ~0x0A;                  // Timer1 clock source = SYSCLK / 4
+#endif
+
+   TMOD = 0x20;                        // Timer1 in 8-bit auto-reload mode
+
+   // Timer1 configured to overflow at 1/3 the rate defined by SMB_FREQUENCY
+   TH1 = -(SYSCLK/SMB_FREQUENCY/SCALE/3);
+
+   TL1 = TH1;                          // Init Timer1
+
+   TR1 = 1;                            // Timer1 enabled
+}
+
+void TIMER2_init(int counts)
+{
+   TMR2CN  = 0x00; // Stop Timer2; Clear TF2;
+   CKCON  &= ~0x60; // Timer2 clocked based on T2XCLK;
+
+   TMR2RL  = -counts; // Init reload values
+   TMR2    = 0xffff; // set to reload immediately
+   ET2     = 1; // enable Timer2 interrupts
+   TR2     = 1; // start Timer2
 }
 
 //-----------------------------------------------------------------------------
