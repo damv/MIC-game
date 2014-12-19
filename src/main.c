@@ -41,6 +41,7 @@ int event_check(event *e);
 //-----------------------------------------------------------------------------
 void main()
 {
+    unsigned char i = 0;
     unsigned char readByte0 = 0x00;
     unsigned char readByte1 = 0x00;
     bit isLastBitRead = 1;
@@ -66,6 +67,9 @@ void main()
         //ACCE_read();
 
         //T0_Wait_ms(10);
+
+		screen_fill(i++);
+		T0_Wait_ms(10);
 
         if (event_check(&top_second))
         {
@@ -99,21 +103,21 @@ void PORT_init()
     // P1.0  -  SDA (SMBus), Open-Drain, Digital
     // P1.1  -  SCL (SMBus), Open-Drain, Digital
     // P1.2  -  SYSCLK,      Open-Drain, Digital
-    // P1.3  -  T0 (Timr0),  Open-Drain, Digital
-    // P1.4  -  T1 (Timr1),  Open-Drain, Digital
+    // P1.3  -  Unassigned,  Open-Drain, Digital
+    // P1.4  -  Unassigned,  Open-Drain, Digital
     // P1.5  -  SCREEN_CS,   Push-Pull, Digital
     // P1.6  -  SCREEN_RST,  Push-Pull, Digital
     // P1.7  -  Unassigned,  Open-Drain, Digital
     // P2.0  -  SPI_MOSI,    Push-Pull, Digital
-    // P2.1  -  SPI_MISO,    Push-Pull, Digital
+    // P2.1  -  SPI_MISO,    Open-Drain, Digital
     // P2.2  -  SPI_SCK,     Push-Pull, Digital
     // P2.3  -  Unassigned,  Open-Drain, Digital
 
     P1MDOUT   = 0x60;
-    P2MDOUT   = 0x07;
+    P2MDOUT   = 0x05;
     P0SKIP    = 0xCF;
-    XBR0      = 0x0D;
-    XBR1      = 0x70;
+    XBR0      = 0x05;
+    XBR1      = 0x40;
 }
 
 //-----------------------------------------------------------------------------
