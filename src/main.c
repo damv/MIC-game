@@ -55,6 +55,8 @@ void main()
     SPI_init();
     screen_init();
 
+    ACCE_begin();
+
     EA = 1; // enable global interrupts
     
     printf("SMBus initialization");
@@ -62,14 +64,7 @@ void main()
     while(1)
     {
         // SMBUS TEST
-        SMBUS_write(ACCE_ADDR, 0x32); // DATAX 0
-        SMBUS_read(ACCE_ADDR, &readByte0, isLastBitRead);
-
-        printf(
-            "Accel X: %x %x\n",
-            (unsigned)(unsigned char)readByte0,
-            (unsigned)(unsigned char)readByte1
-        );
+        ACCE_read();
 
         T0_Wait_ms(10);
 
