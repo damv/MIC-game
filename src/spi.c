@@ -12,6 +12,7 @@
 #include "utils.h"
 
 void _SPI_write(unsigned short c);
+void _screen_reset();
 
 void delay(int ms)
 {
@@ -20,6 +21,8 @@ void delay(int ms)
 
 void screen_init()
 {
+    screen_reset();
+
     // taken from https://github.com/adafruit/Adafruit-HX8340B/blob/master/Adafruit_HX8340B.cpp
     // 14 commands in list
     
@@ -117,16 +120,23 @@ void screen_init()
 
     // 14: Start GRAM write
     SPI_writeCommand(HX8340B_N_RAMWR);
+
+    // disable
+    SCREEN_CS = 0;
 }
 
 void screen_reset()
 {
+    // select screen
+    SCREEN_CS = 1;
+
+    // send reset
     SCREEN_RST = 1;
     delay(100);
     SCREEN_RST = 0;
     delay(50);
     SCREEN_RST = 1;
-    delay(50);   
+    delay(50);
 }
 
 void SPI_init()
