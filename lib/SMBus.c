@@ -69,7 +69,7 @@
 #define  READ           0x01           // SMBus READ command
 
 // Device addresses (7 bits, lsb is a don't care)
-#define  SLAVE_ADDR     0xF0           // Device address for slave target
+#define  SLAVE_ADDR     0x53           // Device address for slave target
 
 // Status vector - top 4 bits only
 #define  SMB_MTSTA      0xE0           // (MT) start transmitted
@@ -77,9 +77,9 @@
 #define  SMB_MRDB       0x80           // (MR) data byte received
 // End status vector definition
 
-#define  NUM_BYTES_WR   3              // Number of bytes to write
+#define  NUM_BYTES_WR   1              // Number of bytes to write
                                        // Master -> Slave
-#define  NUM_BYTES_RD   3              // Number of bytes to read
+#define  NUM_BYTES_RD   1              // Number of bytes to read
                                        // Master <- Slave
 
 //-----------------------------------------------------------------------------
