@@ -21,7 +21,7 @@ void delay(int ms)
 
 void screen_init()
 {
-    screen_reset();
+    _screen_reset();
 
     // taken from https://github.com/adafruit/Adafruit-HX8340B/blob/master/Adafruit_HX8340B.cpp
     // 14 commands in list
@@ -123,9 +123,11 @@ void screen_init()
 
     // disable
     SCREEN_CS = 0;
+
+    screen_fill(0xd0);
 }
 
-void screen_reset()
+void _screen_reset()
 {
     // select screen
     SCREEN_CS = 1;
@@ -137,12 +139,53 @@ void screen_reset()
     delay(50);
     SCREEN_RST = 1;
     delay(50);
+
+    SCREEN_CS = 1;
 }
 
 void SPI_init()
 {
     SPI_SCK = 0;
     SPI_MOSI = 0;
+}
+
+void screen_fill(unsigned short color)
+{
+    unsigned char x, y, hi = color >> 8, lo = color;
+
+    screen_setWindow(0, 0, HX8340B_LCDWIDTH-1, HX8340B_LCDHEIGHT-1);
+
+    SCREEN_CS = 1;
+
+    for (y = HX8340B_LCDHEIGHT; y > 0; y--) {
+        for (x = HX8340B_LCDWIDTH; x > 0; x--) {
+            SPI_writeData(hi);
+            SPI_writeData(lo);
+        }
+    }
+
+    SCREEN_CS = 0;
+}
+
+void screen_setWindow(unsigned char x0, unsigned char y0, unsigned char x1, unsigned char y1)
+{
+    SCREEN_CS = 1;
+
+    SPI_writeCommand(HX8340B_N_CASET); // Column addr set
+    SPI_writeData(0);
+    SPI_writeData(x0);   // X start
+    SPI_writeData(0);
+    SPI_writeData(x1);   // X end
+
+    SPI_writeCommand(HX8340B_N_PASET); // Page addr set
+    SPI_writeData(0);
+    SPI_writeData(y0);   // Y start
+    SPI_writeData(0);
+    SPI_writeData(y1);   // Y end
+
+    SPI_writeCommand(HX8340B_N_RAMWR);
+
+    SCREEN_CS = 0;
 }
 
 void SPI_writeCommand(unsigned short c)

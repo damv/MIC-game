@@ -78,5 +78,9 @@ void SPI_writeCommand(unsigned short c);
 void SPI_writeData(unsigned short c);
 
 void screen_init();
+void screen_fill(unsigned short color);
+void screen_setWindow(unsigned char x0, unsigned char y0, unsigned char x1, unsigned char y1);
+
+
 
 #endif

@@ -50,11 +50,11 @@ void main()
     PORT_init();
     TIMER2_init(SYSCLK / 12 / 500); 
     UART0_init();
-    SMBUS_init();
+    //SMBUS_init();
     SPI_init();
     screen_init();
 
-    ACCE_begin();
+    //ACCE_begin();
 
     EA = 1; // enable global interrupts
     
@@ -63,9 +63,9 @@ void main()
     while(1)
     {
         // SMBUS TEST
-        ACCE_read();
+        //ACCE_read();
 
-        T0_Wait_ms(10);
+        //T0_Wait_ms(10);
 
         if (event_check(&top_second))
         {
