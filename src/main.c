@@ -18,10 +18,6 @@ sfr16 TMR2 = 0xcc; // Timer2 counter
 
 sfr16 PCA0CP0 = 0xFB;
 
-sbit SPI_MISO = P2^0;
-sbit SPI_MOSI = P2^1;
-sbit SPI_SCK = P2^2;
-
 sbit LED = P3^3; // LED='1' means ON
 sbit SW2 = P0^7; // SW2='0' means switch pressed
 
@@ -56,6 +52,7 @@ void main()
     UART0_init();
     SMBUS_init();
     SMBUS_begin(ACCE_ADDR);
+    SPI_init();
     screen_init();
 
     EA = 1; // enable global interrupts
