@@ -51,7 +51,6 @@ void main()
     TIMER2_init(SYSCLK / 12 / 500); 
     UART0_init();
     SMBUS_init();
-    SMBUS_begin(ACCE_ADDR);
     SPI_init();
     screen_init();
 
