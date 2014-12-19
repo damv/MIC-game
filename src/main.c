@@ -107,22 +107,19 @@ void PORT_init()
     // P1.2  -  SYSCLK,      Open-Drain, Digital
     // P1.3  -  T0 (Timr0),  Open-Drain, Digital
     // P1.4  -  T1 (Timr1),  Open-Drain, Digital
-    // P1.5  -  Unassigned,  Open-Drain, Digital
-    // P1.6  -  Unassigned,  Open-Drain, Digital
+    // P1.5  -  SCREEN_CS,   Push-Pull, Digital
+    // P1.6  -  SCREEN_RST,  Push-Pull, Digital
     // P1.7  -  Unassigned,  Open-Drain, Digital
-    // P2.0  -  MOSI,        Push-Pull, Digital
-    // P2.1  -  MISO,        Push-Pull, Digital
-    // P2.2  -  SCK,         Push-Pull, Digital
+    // P2.0  -  SPI_MOSI,    Push-Pull, Digital
+    // P2.1  -  SPI_MISO,    Push-Pull, Digital
+    // P2.2  -  SPI_SCK,     Push-Pull, Digital
     // P2.3  -  Unassigned,  Open-Drain, Digital
 
+    P1MDOUT   = 0x60;
     P2MDOUT   = 0x07;
     P0SKIP    = 0xCF;
     XBR0      = 0x0D;
     XBR1      = 0x70;
-    //XBR0      = 0x04;       // Enable SMBus pins?????????????????????????????????
-    //XBR1      = 0x40;       // Enable crossbar and weak pull-ups?????????????????
-    //P0MDOUT = 0x00;         // All P0 pins open-drain output?????????????????????
-    //P0 = 0xFF;
 }
 
 //-----------------------------------------------------------------------------
