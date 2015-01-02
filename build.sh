@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 
 # a51 is the Keil assembler compiler
 function a51 {
