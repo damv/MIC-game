@@ -11,7 +11,8 @@ install:
   - wine netsh # Create Wine config files
   - a51() { wine /opt/Keil/C51/BIN/A51.exe $@; }
   - c51() { wine /opt/Keil/C51/BIN/C51.exe $@; }
-  - bl51() { wine /opt/Keil/C51/BIN/BL51.exe $@; }
+  # bl51 always exits with non-zero status
+  - bl51() { wine /opt/Keil/C51/BIN/BL51.exe $@ || echo "Done" }
 # a51 is your Keil assembler compiler
 # c51 is your Keil compiler
 # bl51 is your Keil linker
