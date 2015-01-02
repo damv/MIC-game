@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/bash
 
 # a51 is the Keil assembler compiler
 function a51 {
@@ -23,8 +23,9 @@ function bl51 {
     fi
 }
 
-c51 src/main.c
-c51 src/smbus.c
-c51 src/spi.c
-c51 src/utils.c
-bl51 src/main.OBJ, src/smbus.OBJ, src/spi.OBJ, src/utils.OBJ
+cd src
+c51 main.c
+c51 smbus.c
+c51 spi.c
+c51 utils.c
+bl51 main.OBJ, smbus.OBJ, spi.OBJ, utils.OBJ
