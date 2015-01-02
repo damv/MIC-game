@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # a51 is the Keil assembler compiler
 function a51 {
     wine /opt/Keil/C51/BIN/A51.exe $@;
