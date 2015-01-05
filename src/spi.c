@@ -117,7 +117,7 @@ void screen_init()
     SPI_writeCommand(HX8340B_N_RAMWR);
 
     // disable
-    SCREEN_CS = 0;
+    SCREEN_CS = CS_DISABLE;
 
     screen_fill(0xd0);
 }
@@ -125,7 +125,7 @@ void screen_init()
 void _screen_reset()
 {
     // select screen
-    SCREEN_CS = 1;
+    SCREEN_CS = CS_ENABLE;
 
     // send reset
     SCREEN_RST = 1;
@@ -135,7 +135,7 @@ void _screen_reset()
     SCREEN_RST = 1;
     delay(50);
 
-    SCREEN_CS = 1;
+    SCREEN_CS = CS_ENABLE;
 }
 
 void SPI_init()
@@ -150,7 +150,7 @@ void screen_fill(unsigned short color)
 
     screen_setWindow(0, 0, HX8340B_LCDWIDTH-1, HX8340B_LCDHEIGHT-1);
 
-    SCREEN_CS = 1;
+    SCREEN_CS = CS_ENABLE;
 
     for (y = HX8340B_LCDHEIGHT; y > 0; y--) {
         for (x = HX8340B_LCDWIDTH; x > 0; x--) {
@@ -159,12 +159,12 @@ void screen_fill(unsigned short color)
         }
     }
 
-    SCREEN_CS = 0;
+    SCREEN_CS = CS_DISABLE;
 }
 
 void screen_setWindow(unsigned char x0, unsigned char y0, unsigned char x1, unsigned char y1)
 {
-    SCREEN_CS = 1;
+    SCREEN_CS = CS_ENABLE;
 
     SPI_writeCommand(HX8340B_N_CASET); // Column addr set
     SPI_writeData(0);
@@ -180,7 +180,7 @@ void screen_setWindow(unsigned char x0, unsigned char y0, unsigned char x1, unsi
 
     SPI_writeCommand(HX8340B_N_RAMWR);
 
-    SCREEN_CS = 0;
+    SCREEN_CS = CS_DISABLE;
 }
 
 void SPI_writeCommand(unsigned short c)

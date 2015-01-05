@@ -4,14 +4,6 @@
 #define HX8340B_LCDWIDTH                  176
 #define HX8340B_LCDHEIGHT                 220
 
-// screen control pins
-sbit SCREEN_CS = P1^5;
-sbit SCREEN_RST = P1^6;
-
-sbit SPI_MOSI = P2^0;
-sbit SPI_MISO = P2^1;
-sbit SPI_SCK = P2^2;
-
 // HX8340-B(N) Commands (used by BTL221722-276L)
 #define HX8340B_N_NOP                     (0x00)
 #define HX8340B_N_SWRESET                 (0x01)
@@ -69,6 +61,17 @@ sbit SPI_SCK = P2^2;
 #define HX8340B_N_SETEXTCMD               (0xC1)
 #define HX8340B_N_SETGAMMAP               (0xC2)
 #define HX8340B_N_SETGAMMAN               (0xC3)
+
+#define CS_ENABLE 0
+#define CS_DISABLE 1
+
+// screen control pins
+sbit SCREEN_CS = P1^5;
+sbit SCREEN_RST = P1^6;
+
+sbit SPI_MOSI = P2^0;
+sbit SPI_MISO = P2^1;
+sbit SPI_SCK = P2^2;
 
 void SPI_init();
 void SPI_writeCommand(unsigned short c);
