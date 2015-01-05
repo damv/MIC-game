@@ -1,6 +1,16 @@
 #include "../lib/c8051f310.h"
 #include "utils.h"
 
+#define SYSCLK 24500000        // SYSCLK frequency in Hz
+
+void T0_Wait_ms (unsigned char ms);
+
+
+void delay(unsigned char ms)
+{
+    T0_Wait_ms(ms);
+}
+
 //-----------------------------------------------------------------------------
 // T0_Wait_ms
 //-----------------------------------------------------------------------------

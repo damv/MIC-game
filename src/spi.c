@@ -14,11 +14,6 @@
 void _SPI_write(unsigned short c);
 void _screen_reset();
 
-void delay(int ms)
-{
-    T0_Wait_ms(ms);
-}
-
 void screen_init()
 {
     _screen_reset();

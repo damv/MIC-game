@@ -9,16 +9,5 @@ install:
   - sudo chmod -R 755 /opt/Keil
   - wine --version
   - wine netsh # Create Wine config files
-  - a51() { wine /opt/Keil/C51/BIN/A51.exe $@; }
-  - c51() { wine /opt/Keil/C51/BIN/C51.exe $@; }
-  - bl51() { wine /opt/Keil/C51/BIN/BL51.exe $@; }
-# a51 is your Keil assembler compiler
-# c51 is your Keil compiler
-# bl51 is your Keil linker
 script:
-  - cd src
-  - c51 main.c
-  - c51 smbus.c
-  - c51 spi.c
-  - c51 utils.c
-  - bl51 main.OBJ, smbus.OBJ, spi.OBJ, utils.OBJ
+  - ./build.sh
