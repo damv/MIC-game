@@ -5,9 +5,8 @@
 #define HX8340B_LCDHEIGHT                 220
 
 // screen control pins
-sbit SCREEN_CS = P1^2;
-sbit SCREEN_SDCS = P0^6;
-sbit SCREEN_RST = P0^2;
+sbit SCREEN_CS = P1^5;
+sbit SCREEN_RST = P1^6;
 
 sbit SPI_MOSI = P2^0;
 sbit SPI_MISO = P2^1;
