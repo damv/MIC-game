@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "../lib/c8051f310.h"  
 
-#include "smbus.h"
+#include "smbus2.h"
 #include "spi.h"
 #include "utils.h"
 
