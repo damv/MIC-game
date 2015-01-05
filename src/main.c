@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+
 #include "../lib/c8051f310.h"  
 
 #include "smbus2.h"
@@ -38,6 +40,20 @@ void event_init(event *e);
 int event_check(event *e);
 
 
+void draw(unsigned short x, unsigned short y) {
+    unsigned char i = 0, j = 0;
+
+    for (i = 0; i < 10; i++) {
+        for (j = 0; j < 10; j++) {
+            screen_drawPixel(x + i, y + j, 0x0000);
+        }
+    }
+
+    for (i = 1; i < 9; i++) {
+        screen_drawPixel(x + i, y + i, 0xffff);
+    }
+}
+
 //-----------------------------------------------------------------------------
 // Function declarations
 //-----------------------------------------------------------------------------
@@ -55,6 +71,8 @@ void main()
     unsigned char ACCE_Z1 = 0x10;
 
     PCA0MD &= ~0x40; // disable watchdog timer
+
+    srand(1234);
 
     SYSCLK_init();
     PORT_init();
@@ -77,13 +95,6 @@ void main()
 
     EA = 1; // enable global interrupts
 
-    screen_fill(0x0000);
-
-    screen_drawPixel(20, 20, 0xf00f);
-    screen_drawPixel(23, 23, 0xff0f);
-
-    screen_drawNumber(40, 40, 8, 0xffff, 0x0000);
-
     while(1)
     {
         // SMBUS TEST
@@ -99,9 +110,9 @@ void main()
             (unsigned long)(long)ACCE_Z1
         );
 
-        delay(1000);
+        draw(i, i);
         
-        // i++;
+        i++;
         // screen_fill(i);
         // delay(10);
 

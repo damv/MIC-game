@@ -119,7 +119,7 @@ void screen_init()
     // disable
     SCREEN_CS = CS_DISABLE;
 
-    screen_fill(0xd0);
+    screen_fill(0);
 }
 
 void _screen_reset()
@@ -203,7 +203,8 @@ void screen_drawNumber(unsigned short x, unsigned short y,
                        unsigned char num, unsigned short color,
                        unsigned short bgcolor)
 {
-    code unsigned long fontnumber[] = {0xF4A52978, //0
+    code unsigned long fontnumber[] = {
+        0xF4A52978, //0
         0x11942108, //1
         0x64844478, //2
         0xF09C2178, //3
