@@ -92,6 +92,8 @@ void main()
             (unsigned long)(long)ACCE_Z1
         );
 
+        screen_fill(0x0000);
+
         delay(1000);
         
         // i++;

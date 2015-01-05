@@ -9,8 +9,8 @@ sbit SCREEN_CS = P1^2;
 sbit SCREEN_SDCS = P0^6;
 sbit SCREEN_RST = P0^2;
 
-sbit SPI_MISO = P2^0;
-sbit SPI_MOSI = P2^1;
+sbit SPI_MOSI = P2^0;
+sbit SPI_MISO = P2^1;
 sbit SPI_SCK = P2^2;
 
 // HX8340-B(N) Commands (used by BTL221722-276L)
