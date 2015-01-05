@@ -183,6 +183,63 @@ void screen_setWindow(unsigned char x0, unsigned char y0, unsigned char x1, unsi
     SCREEN_CS = CS_DISABLE;
 }
 
+void screen_drawPixel(unsigned short x, unsigned short y, unsigned short color)
+{
+    if ((x < 0) || (x >= HX8340B_LCDWIDTH)
+        || (y < 0) || y >= HX8340B_LCDHEIGHT) {
+        return;
+    }
+
+    screen_setWindow(x, y, x, y);
+    SCREEN_CS = CS_ENABLE;
+
+    SPI_writeData(color >> 8);
+    SPI_writeData(color);
+
+    SCREEN_CS = CS_DISABLE;
+}
+
+void screen_drawNumber(unsigned short x, unsigned short y,
+                       unsigned char num, unsigned short color,
+                       unsigned short bgcolor)
+{
+    code unsigned long fontnumber[] = {0xF4A52978, //0
+        0x11942108, //1
+        0x64844478, //2
+        0xF09C2178, //3
+        0x94BC2108, //4
+        0xF4382170, //5
+        0x7421E978, //6
+        0xF0888420, //7
+        0x64992930, //8
+        0xF4BC2138, //9
+        0x03180630, //:
+        0x00000630, //.
+        0x64A10930  //C
+    };
+    unsigned char hi = color >> 8, lo = color;
+    unsigned char bghi = bgcolor >> 8, bglo = bgcolor;
+    unsigned long b = 0x8000;
+
+    screen_setWindow(x, y, x + 4, y + 5);
+
+    SCREEN_CS = CS_ENABLE;
+    
+    for (b = 0x80000000; b > 0x00000004; b = b >> 1)
+    {
+        if (fontnumber[num] & b) {
+            SPI_writeData(hi);
+            SPI_writeData(lo);
+        }
+        else {
+            SPI_writeData(bghi);
+            SPI_writeData(bglo);
+        }
+    }   
+
+    SCREEN_CS = CS_DISABLE;
+}
+
 void SPI_writeCommand(unsigned short c)
 {
     // send 0 as first bit (command)

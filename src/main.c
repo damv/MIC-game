@@ -77,6 +77,13 @@ void main()
 
     EA = 1; // enable global interrupts
 
+    screen_fill(0x0000);
+
+    screen_drawPixel(20, 20, 0xf00f);
+    screen_drawPixel(23, 23, 0xff0f);
+
+    screen_drawNumber(40, 40, 8, 0xffff, 0x0000);
+
     while(1)
     {
         // SMBUS TEST
@@ -91,8 +98,6 @@ void main()
             (unsigned long)(long)ACCE_Z0,
             (unsigned long)(long)ACCE_Z1
         );
-
-        screen_fill(0x0000);
 
         delay(1000);
         
