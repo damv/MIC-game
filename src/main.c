@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../lib/c8051f310.h"  
+#include "../lib/c8051f310.h"
 
 #include "smbus.h"
 #include "spi.h"
 #include "utils.h"
+#include "game.h"
 
 #define SYSCLK 24500000         // SYSCLK frequency in Hz
 
@@ -38,21 +39,6 @@ void TIMER2_init(int counts);
 void Put_char_(unsigned char c);
 void event_init(event *e);
 int event_check(event *e);
-
-
-void draw(unsigned short x, unsigned short y) {
-    unsigned char i = 0, j = 0;
-
-    for (i = 0; i < 10; i++) {
-        for (j = 0; j < 10; j++) {
-            screen_drawPixel(x + i, y + j, 0x0000);
-        }
-    }
-
-    for (i = 1; i < 9; i++) {
-        screen_drawPixel(x + i, y + i, 0xffff);
-    }
-}
 
 //-----------------------------------------------------------------------------
 // Function declarations
@@ -106,7 +92,7 @@ void main()
             (int)ACCE_Z
         );
 
-        draw(i, i);
+        game_draw(i, i);
         
         i++;
         // screen_fill(i);
