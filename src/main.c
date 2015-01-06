@@ -45,15 +45,16 @@ int event_check(event *e);
 //-----------------------------------------------------------------------------
 void main()
 {
-    unsigned char i = 0;
+    unsigned char screenPos = 0;
+    unsigned char playerX = HX8340B_LCDWIDTH / 2;
+    unsigned char playerY = HX8340B_LCDHEIGHT - 20;
+    unsigned short screenSpeed = 0;
     unsigned char readByte0 = 0x00;
     unsigned char readByte1 = 0x00;
     
     signed int ACCE_X = 0x10;
     signed int ACCE_Y = 0x10;
     signed int ACCE_Z = 0x10;
-
-    int x, y, z;
 
     PCA0MD &= ~0x40; // disable watchdog timer
 
@@ -74,11 +75,14 @@ void main()
     SPI_init();
 	printf("- SPI intialized\n");
     screen_init();
+    screen_initScroll();
 	printf("- Screen initialized\n");
     ACCE_begin();
 	printf("- Accelerometer communication started\n");
 
     EA = 1; // enable global interrupts
+
+    game_draw();
 
     while(1)
     {
@@ -92,11 +96,17 @@ void main()
             (int)ACCE_Z
         );
 
-        game_draw(i, i);
-        
-        i++;
-        // screen_fill(i);
-        delay(100);
+        screenSpeed = -ACCE_Y / 10;
+        screenPos = (screenPos + screenSpeed - 1) % SCREEN_SCROLLING_HEIGHT;
+
+        playerX += ACCE_X / 10;
+        playerY += screenSpeed;
+
+        game_drawGUI();
+        game_drawPlayer(playerX, playerY);
+        game_drawAccelerometerValues(ACCE_X / 3, ACCE_Y / 3);
+
+        screen_verticalScroll(screenPos);
 
         if (event_check(&top_second))
         {

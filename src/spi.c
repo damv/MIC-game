@@ -115,7 +115,7 @@ void screen_init()
 
     // 14: Start GRAM write
     SPI_writeCommand(HX8340B_N_RAMWR);
-
+    
     // disable
     SCREEN_CS = CS_DISABLE;
 
@@ -142,6 +142,24 @@ void SPI_init()
 {
     SPI_SCK = 0;
     SPI_MOSI = 0;
+}
+
+void screen_initScroll()
+{
+    SCREEN_CS = CS_ENABLE;
+
+    // Vertical scroll definition
+    SPI_writeCommand(HX8340B_N_VSCRDEF);
+    SPI_writeData(0x00);
+    SPI_writeData(SCREEN_FIXED_TOP_HEIGHT); // top fixed area size
+    SPI_writeData(0x00);
+    SPI_writeData(SCREEN_SCROLLING_HEIGHT); // visible scrolling area size
+    SPI_writeData(0x00);
+    SPI_writeData(SCREEN_FIXED_BOT_HEIGHT); // bottom fixed area size
+
+    delay(200);
+
+    SCREEN_CS = CS_DISABLE;
 }
 
 void screen_fill(unsigned short color)
@@ -353,6 +371,19 @@ void screen_fillRect(unsigned short x, unsigned short y, unsigned short w, unsig
         SPI_writeData(hi);
         SPI_writeData(lo);
     }
+
+    SCREEN_CS = CS_DISABLE;
+}
+
+void screen_verticalScroll(unsigned char scroll)
+{
+    scroll = scroll % SCREEN_SCROLLING_HEIGHT;
+    
+    SCREEN_CS = CS_ENABLE;
+
+    SPI_writeCommand(HX8340B_N_VSCRSADD);
+    SPI_writeData(0x00);
+    SPI_writeData(scroll + SCREEN_FIXED_TOP_HEIGHT);
 
     SCREEN_CS = CS_DISABLE;
 }
