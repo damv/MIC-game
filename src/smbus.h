@@ -13,7 +13,7 @@ void ACCE_begin();
 void ACCE_read(
     int* ACCE_X,
     int* ACCE_Y,
-    int* ACCE_Z,
+    int* ACCE_Z
 );
 
 #endif
