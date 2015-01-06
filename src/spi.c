@@ -313,6 +313,50 @@ void screen_drawFastHLine(unsigned short x, unsigned short y, unsigned short w, 
     SCREEN_CS = CS_DISABLE;
 }
 
+void screen_fillRect(unsigned short x, unsigned short y, unsigned short w, unsigned short h, unsigned short color)
+{
+    unsigned short x2, y2;
+    unsigned char hi = color >> 8, lo = color;
+    unsigned long i = (unsigned long)w * (unsigned long)h;
+
+    if ((x >= HX8340B_LCDWIDTH) || (y >= HX8340B_LCDHEIGHT)) {
+        // off screen
+        return;
+    }
+
+    x2 = x + w - 1;
+    y2 = y + h - 1;
+
+    if ((x2 < 0) || (y2 < 0)) {
+        // off screen
+        return;
+    }
+
+    if (x2 >= HX8340B_LCDWIDTH) {
+        x2 = HX8340B_LCDWIDTH - 1; // clip right
+    }
+    if (x < 0) {
+        x = 0; // clip left
+    }
+    if (y2 >= HX8340B_LCDHEIGHT) {
+        y2 = HX8340B_LCDHEIGHT - 1; // clip bottom
+    }
+    if (y < 0) {
+        y = 0; // clip top
+    }
+
+    screen_setWindow(x, y, x2, y2);
+
+    SCREEN_CS = CS_ENABLE;
+
+    while (i--) {
+        SPI_writeData(hi);
+        SPI_writeData(lo);
+    }
+
+    SCREEN_CS = CS_DISABLE;
+}
+
 void SPI_writeCommand(unsigned short c)
 {
     // send 0 as first bit (command)

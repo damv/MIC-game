@@ -83,6 +83,7 @@ void screen_setWindow(unsigned char x0, unsigned char y0, unsigned char x1, unsi
 void screen_drawPixel(unsigned short x, unsigned short y, unsigned short color);
 void screen_drawNumber(unsigned short x, unsigned short y, unsigned char num, unsigned short color, unsigned short bgcolor);
 void screen_drawFastVLine(unsigned short x, unsigned short y, unsigned short h, unsigned short color);
+void screen_fillRect(unsigned short x, unsigned short y, unsigned short w, unsigned short h, unsigned short color);
 
 
 #endif
