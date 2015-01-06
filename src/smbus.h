@@ -19,4 +19,13 @@ void ACCE_read(
     unsigned char* ACCE_Z1
 );
 
+// void GYRO_read(
+//     unsigned char* gyro_x0,
+//     unsigned char* gyro_x1,
+//     unsigned char* gyro_y0,
+//     unsigned char* gyro_y1,
+//     unsigned char* gyro_z0,
+//     unsigned char* gyro_z1
+// );
+
 #endif

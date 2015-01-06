@@ -81,16 +81,10 @@ unsigned char SMBUS_read_value()
 void SMBUS_ack()
 {
     ACK = 1;
-    SI = 0;
-    while (SI == 0);
-    ACK = 0;
 }
 
 void SMBUS_nack()
 {
-    ACK = 0;
-    SI = 0;
-    while (SI == 0);
     ACK = 0;
 }
 
@@ -105,6 +99,39 @@ void ACCE_begin()
     //SMBUS_stop(); //?????????????????????????????????????????
 }
 
+// void GYRO_read(
+//     unsigned char* gyro_x0,
+//     unsigned char* gyro_x1,
+//     unsigned char* gyro_y0,
+//     unsigned char* gyro_y1,
+//     unsigned char* gyro_z0,
+//     unsigned char* gyro_z1
+// )
+// {
+//     // send address and write register
+//     SMBUS_start();
+//     SMBUS_write_address(GYRO_ADDR, WRITE);
+//     SMBUS_write_value(0x28);
+
+//     // send address in read mode
+//     SMBUS_start();
+//     SMBUS_write_address(GYRO_ADDR, READ);
+    
+//     // read char
+//     *gyro_x0 = SMBUS_read_value();
+//     SMBUS_ack();
+//     *gyro_x1 = SMBUS_read_value();
+//     SMBUS_ack();
+//     *gyro_y0 = SMBUS_read_value();
+//     SMBUS_ack();
+//     *gyro_y1 = SMBUS_read_value();
+//     SMBUS_ack();
+//     *gyro_z0 = SMBUS_read_value();
+//     SMBUS_ack();
+//     *gyro_z1 = SMBUS_read_value();
+//     SMBUS_nack();
+// }
+
 void ACCE_read(
     unsigned char* ACCE_X0,
     unsigned char* ACCE_X1,
@@ -114,15 +141,13 @@ void ACCE_read(
     unsigned char* ACCE_Z1
 )
 {
-    SMBUS_start(); //????????????????????????????????????????
-
-    SMBUS_write_address(ACCE_ADDR, WRITE);
-    SMBUS_write_value(DATAX0); //????????????????????????????
-
-    delay(10);
-
+    // send address and write register
     SMBUS_start();
+    SMBUS_write_address(ACCE_ADDR, WRITE);
+    SMBUS_write_value(DATAX0);
 
+    // send address in read mode
+    SMBUS_start();
     SMBUS_write_address(ACCE_ADDR, READ);
     
     // read char
@@ -139,6 +164,6 @@ void ACCE_read(
     *ACCE_Z1 = SMBUS_read_value();
     SMBUS_nack();
 
-    // SMBUS_stop();    
+    // SMBUS_stop();
 }
 

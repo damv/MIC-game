@@ -3,7 +3,7 @@
 
 #include "../lib/c8051f310.h"  
 
-#include "smbus2.h"
+#include "smbus.h"
 #include "spi.h"
 #include "utils.h"
 
@@ -70,6 +70,8 @@ void main()
     unsigned char ACCE_Z0 = 0x10;
     unsigned char ACCE_Z1 = 0x10;
 
+    int x, y, z;
+
     PCA0MD &= ~0x40; // disable watchdog timer
 
     srand(1234);
@@ -98,23 +100,24 @@ void main()
     while(1)
     {
         // SMBUS TEST
-        ACCE_read(&ACCE_X0, &ACCE_X1, &ACCE_Y0, &ACCE_X1, &ACCE_Z0, &ACCE_Z1);
+        ACCE_read(&ACCE_X0, &ACCE_X1, &ACCE_Y0, &ACCE_Y1, &ACCE_Z0, &ACCE_Z1);
+
+        x = ((int)ACCE_X1 << 8) | ACCE_X0;
+        y = ((int)ACCE_Y1 << 8) | ACCE_Y0;
+        z = ((int)ACCE_Z1 << 8) | ACCE_Z0;
 
         printf(
-            "Accelerometer : %d %d %d %d %d %d\n",
-            (unsigned long)(long)ACCE_X0,
-            (unsigned long)(long)ACCE_X1,
-            (unsigned long)(long)ACCE_Y0,
-            (unsigned long)(long)ACCE_Y1,
-            (unsigned long)(long)ACCE_Z0,
-            (unsigned long)(long)ACCE_Z1
+            "Accelerometer : %d\t%d\t%d\n",
+            (int)x,
+            (int)y,
+            (int)z
         );
 
         draw(i, i);
         
         i++;
         // screen_fill(i);
-        // delay(10);
+        delay(100);
 
         if (event_check(&top_second))
         {
