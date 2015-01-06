@@ -132,15 +132,21 @@ void ACCE_begin()
 //     SMBUS_nack();
 // }
 
+
+
 void ACCE_read(
-    unsigned char* ACCE_X0,
-    unsigned char* ACCE_X1,
-    unsigned char* ACCE_Y0,
-    unsigned char* ACCE_Y1,
-    unsigned char* ACCE_Z0,
-    unsigned char* ACCE_Z1
+    int* ACCE_X,
+    int* ACCE_Y,
+    int* ACCE_Z
 )
 {
+	unsigned char ACCE_X0;
+	unsigned char ACCE_X1;
+	unsigned char ACCE_Y0;
+	unsigned char ACCE_Y1;
+	unsigned char ACCE_Z0;
+	unsigned char ACCE_Z1;
+
     // send address and write register
     SMBUS_start();
     SMBUS_write_address(ACCE_ADDR, WRITE);
@@ -151,18 +157,22 @@ void ACCE_read(
     SMBUS_write_address(ACCE_ADDR, READ);
     
     // read char
-    *ACCE_X0 = SMBUS_read_value();
+    ACCE_X0 = SMBUS_read_value();
     SMBUS_ack();
-    *ACCE_X1 = SMBUS_read_value();
+    ACCE_X1 = SMBUS_read_value();
     SMBUS_ack();
-    *ACCE_Y0 = SMBUS_read_value();
+    ACCE_Y0 = SMBUS_read_value();
     SMBUS_ack();
-    *ACCE_Y1 = SMBUS_read_value();
+    ACCE_Y1 = SMBUS_read_value();
     SMBUS_ack();
-    *ACCE_Z0 = SMBUS_read_value();
+    ACCE_Z0 = SMBUS_read_value();
     SMBUS_ack();
-    *ACCE_Z1 = SMBUS_read_value();
+    ACCE_Z1 = SMBUS_read_value();
     SMBUS_nack();
+
+    *ACCE_X = ((int)ACCE_X1 << 8) | ACCE_X0;
+    *ACCE_Y = ((int)ACCE_Y1 << 8) | ACCE_Y0;
+    *ACCE_Z = ((int)ACCE_Z1 << 8) | ACCE_Z0;
 
     // SMBUS_stop();
 }

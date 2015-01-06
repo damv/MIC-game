@@ -63,12 +63,9 @@ void main()
     unsigned char readByte0 = 0x00;
     unsigned char readByte1 = 0x00;
     
-    unsigned char ACCE_X0 = 0x10;
-    unsigned char ACCE_X1 = 0x10;
-    unsigned char ACCE_Y0 = 0x10;
-    unsigned char ACCE_Y1 = 0x10;
-    unsigned char ACCE_Z0 = 0x10;
-    unsigned char ACCE_Z1 = 0x10;
+    signed int ACCE_X = 0x10;
+    signed int ACCE_Y = 0x10;
+    signed int ACCE_Z = 0x10;
 
     int x, y, z;
 
@@ -100,17 +97,13 @@ void main()
     while(1)
     {
         // SMBUS TEST
-        ACCE_read(&ACCE_X0, &ACCE_X1, &ACCE_Y0, &ACCE_Y1, &ACCE_Z0, &ACCE_Z1);
-
-        x = ((int)ACCE_X1 << 8) | ACCE_X0;
-        y = ((int)ACCE_Y1 << 8) | ACCE_Y0;
-        z = ((int)ACCE_Z1 << 8) | ACCE_Z0;
+        ACCE_read(&ACCE_X, &ACCE_Y, &ACCE_Z);
 
         printf(
             "Accelerometer : %d\t%d\t%d\n",
-            (int)x,
-            (int)y,
-            (int)z
+            (int)ACCE_X,
+            (int)ACCE_Y,
+            (int)ACCE_Z
         );
 
         draw(i, i);

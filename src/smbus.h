@@ -11,21 +11,9 @@ void ACCE_begin();
 
 // READ
 void ACCE_read(
-    unsigned char* ACCE_X0,
-    unsigned char* ACCE_X1,
-    unsigned char* ACCE_Y0,
-    unsigned char* ACCE_Y1,
-    unsigned char* ACCE_Z0,
-    unsigned char* ACCE_Z1
+    int* ACCE_X,
+    int* ACCE_Y,
+    int* ACCE_Z,
 );
-
-// void GYRO_read(
-//     unsigned char* gyro_x0,
-//     unsigned char* gyro_x1,
-//     unsigned char* gyro_y0,
-//     unsigned char* gyro_y1,
-//     unsigned char* gyro_z0,
-//     unsigned char* gyro_z1
-// );
 
 #endif
