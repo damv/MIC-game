@@ -11,7 +11,7 @@
 #include "spi.h"
 #include "utils.h"
 
-void _SPI_write(unsigned short c);
+void _SPI_write(unsigned char c);
 void _screen_reset();
 
 void screen_init()
@@ -241,6 +241,78 @@ void screen_drawNumber(unsigned short x, unsigned short y,
     SCREEN_CS = CS_DISABLE;
 }
 
+void screen_drawFastVLine(unsigned short x, unsigned short y, unsigned short h, unsigned short color)
+{
+	unsigned short y2 = y + h - 1;
+    unsigned char hi = color >> 8, lo = color;
+
+    if ((x < 0) || (x >= HX8340B_LCDWIDTH) || (y >= HX8340B_LCDHEIGHT)) {
+        // off screen
+        return;
+    }
+    
+    if (y2 < 0) {
+        // off screen
+        return;
+    }
+
+    if (y2 >= HX8340B_LCDHEIGHT) {
+        h = HX8340B_LCDHEIGHT - y; // Clip bottom
+    }
+
+    if (y < 0) {
+        h += y;
+        y = 0; // Clip top
+    }
+    screen_setWindow(x, y, x, y + h - 1);
+
+
+    SCREEN_CS = CS_ENABLE;
+
+    while (h--) {
+        SPI_writeData(hi);
+        SPI_writeData(lo);
+    }
+
+    SCREEN_CS = CS_DISABLE;
+}
+
+void screen_drawFastHLine(unsigned short x, unsigned short y, unsigned short w, unsigned short color)
+{
+    unsigned short x2 = x + w - 1;
+    unsigned char hi = color >> 8, lo = color;
+
+
+    if ((y < 0) || (y >= HX8340B_LCDHEIGHT) || (x >= HX8340B_LCDWIDTH)) {
+        return; // off screen
+    }
+
+    if (x2 < 0) {
+        // Fully off left
+        return;
+    }
+
+    if (x2 >= HX8340B_LCDWIDTH) {
+        w = HX8340B_LCDWIDTH - x; // Clip right
+    }
+
+    if (x < 0) {
+        w += x;
+        x = 0; // Clip left
+    }
+    
+    screen_setWindow(x, y, x + w - 1, y);
+
+    SCREEN_CS = CS_ENABLE;
+
+    while (w--) {
+        SPI_writeData(hi);
+        SPI_writeData(lo);
+    }
+    
+    SCREEN_CS = CS_DISABLE;
+}
+
 void SPI_writeCommand(unsigned short c)
 {
     // send 0 as first bit (command)
@@ -263,7 +335,7 @@ void SPI_writeData(unsigned short c)
     _SPI_write(c);
 }
 
-void _SPI_write(unsigned short c)
+void _SPI_write(unsigned char c)
 {
     char i = 7;
     for (i = 7; i >= 0; i--) {
