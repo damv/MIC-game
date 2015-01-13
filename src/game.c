@@ -9,6 +9,8 @@ void game_init(Game* game)
 
     player.x = HX8340B_LCDWIDTH / 2;
     player.y = HX8340B_LCDHEIGHT - 20;
+    player.color = 0xaaaa;
+    player.size = 10;
 
     (*game).score = 0;
     (*game).player = player;

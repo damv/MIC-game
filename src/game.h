@@ -2,8 +2,8 @@
 #define __GAME_H__
 
 typedef struct Player {
-	unsigned short x;
-	unsigned short y;
+	signed short x;
+	signed short y;
 	unsigned short size;
 	unsigned short color;
 } Player;

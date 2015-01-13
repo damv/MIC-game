@@ -98,7 +98,7 @@ void main()
         screenPos = positive_modulo((screenPos + screenSpeed), SCREEN_SCROLLING_HEIGHT);
 
         game.player.x += ACCE_X / 10;
-        game.player.y += screenSpeed % SCREEN_SCROLLING_HEIGHT;
+        game.player.y = positive_modulo(screenPos + 180, SCREEN_SCROLLING_HEIGHT);
 
         game_draw(game);
 
