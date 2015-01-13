@@ -80,7 +80,6 @@ void main()
 
     EA = 1; // enable global interrupts
 
-
     game_init(&game);
 
     while(1)
@@ -101,7 +100,7 @@ void main()
         game.player.x += ACCE_X / 10;
         game.player.y += screenSpeed;
 
-        game_draw(game.player);
+        game_draw(game);
 
         screen_verticalScroll(screenPos);
     }
