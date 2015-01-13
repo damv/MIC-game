@@ -43,6 +43,16 @@ int event_check(event *e);
 //-----------------------------------------------------------------------------
 // Function declarations
 //-----------------------------------------------------------------------------
+
+int positive_modulo (int x, int y)
+{
+    if (x>=0) {
+        return x%y;
+    } else {
+        return -(x%y);
+    }
+}
+
 void main()
 {
 
@@ -100,7 +110,7 @@ void main()
         );
 
         screenSpeed = -ACCE_Y / 10;
-        screenPos = (screenPos + screenSpeed - 1) % SCREEN_SCROLLING_HEIGHT;
+        screenPos = positive_modulo((screenPos + screenSpeed - 1), SCREEN_SCROLLING_HEIGHT);
 
         player.x += ACCE_X / 10;
         player.y += screenSpeed;
