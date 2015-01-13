@@ -10,12 +10,15 @@ typedef struct Player {
 
 typedef struct Game {
 	unsigned long score;
+	Player player;
 } Game;
 
+void game_init(Game* game);
 
 void game_draw(Player player);
+void game_drawBackground();
 void game_drawAccelerometerValues(int x, int y);
-void game_drawGUI();
+void game_drawGUI(unsigned long score);
 void game_drawPlayer(Player player);
 
 #endif

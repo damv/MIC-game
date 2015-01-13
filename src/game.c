@@ -3,6 +3,19 @@
 #include "game.h"
 
 
+void game_init(Game* game)
+{
+	Player player;
+
+    player.x = HX8340B_LCDWIDTH / 2;
+    player.y = HX8340B_LCDHEIGHT - 20;
+
+    (*game).score = 0;
+    (*game).player = player;
+
+    game_drawBackground();
+}
+
 void game_drawAccelerometerValues(int x, int y)
 {
     // erase lines
@@ -25,10 +38,10 @@ void game_drawAccelerometerValues(int x, int y)
 	}
 }
 
-void game_draw(Player player)
+void game_draw(Game game)
 {
-    game_drawGUI();
-    game_drawPlayer(player);
+    game_drawGUI(game.score);
+    game_drawPlayer(game.player);
 }
 
 void game_drawBackground()
@@ -37,7 +50,7 @@ void game_drawBackground()
 	screen_fillRect(20, 20, HX8340B_LCDWIDTH - 40, HX8340B_LCDHEIGHT - 40, 0x0bd7);
 }
 
-void game_drawGUI()
+void game_drawGUI(unsigned long score)
 {
 	int i;
 	for (i = 0; i < 10; i++) {

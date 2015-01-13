@@ -55,23 +55,17 @@ int positive_modulo (int x, int y)
 
 void main()
 {
-
     unsigned int screenPos = 0;
-    Player player;
     unsigned int screenSpeed = 0;
     unsigned char readByte0 = 0x00;
     unsigned char readByte1 = 0x00;
+    Game game;
     
     signed int ACCE_X = 0x10;
     signed int ACCE_Y = 0x10;
     signed int ACCE_Z = 0x10;
 
-    player.x = HX8340B_LCDWIDTH / 2;
-    player.y = HX8340B_LCDHEIGHT - 20;
-
     PCA0MD &= ~0x40; // disable watchdog timer
-
-    srand(1234);
 
     SYSCLK_init();
     PORT_init();
@@ -95,7 +89,8 @@ void main()
 
     EA = 1; // enable global interrupts
 
-    game_draw();
+
+    game_init(&game);
 
     while(1)
     {
@@ -112,10 +107,10 @@ void main()
         screenSpeed = -ACCE_Y / 10;
         screenPos = positive_modulo((screenPos + screenSpeed - 1), SCREEN_SCROLLING_HEIGHT);
 
-        player.x += ACCE_X / 10;
-        player.y += screenSpeed;
+        game.player.x += ACCE_X / 10;
+        game.player.y += screenSpeed;
 
-        game_draw(player);
+        game_draw(game.player);
 
         screen_verticalScroll(screenPos);
 
