@@ -44,14 +44,13 @@ int event_check(event *e);
 // Function declarations
 //-----------------------------------------------------------------------------
 
+xdata Game game;
+xdata unsigned int screenSpeed = 0;
+xdata unsigned char readByte0 = 0x00;
+xdata unsigned char readByte1 = 0x00;
+
 void main()
 {
-    unsigned int screenPos = 0;
-    signed int screenSpeed = 0;
-    unsigned char readByte0 = 0x00;
-    unsigned char readByte1 = 0x00;
-    Game game;
-    
     signed int ACCE_X = 0x10;
     signed int ACCE_Y = 0x10;
     signed int ACCE_Z = 0x10;
@@ -94,15 +93,13 @@ void main()
             (int)ACCE_Z
         );
 
-        screenSpeed = (-7+ACCE_Y/30 <= 0)? -7+ACCE_Y/30 : 0;
-        screenPos = positive_modulo((screenPos + screenSpeed), SCREEN_SCROLLING_HEIGHT);
+		screenSpeed = (-7 + ACCE_Y / 30 <= 0) ? -7 + ACCE_Y / 30 : 0;
+        game.screenPos = positive_modulo((game.screenPos + screenSpeed - 1), SCREEN_SCROLLING_HEIGHT);
 
         game.player.x += ACCE_X / 10;
         game.player.y = positive_modulo(screenPos + 180, SCREEN_SCROLLING_HEIGHT);
 
         game_draw(game);
-
-        screen_verticalScroll(screenPos);
     }
 }
 

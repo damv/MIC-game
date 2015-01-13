@@ -92,4 +92,6 @@ void screen_drawFastHLine(unsigned short x, unsigned short y, unsigned short w, 
 void screen_fillRect(unsigned short x, unsigned short y, unsigned short w, unsigned short h, unsigned short color);
 void screen_verticalScroll(unsigned char scroll);
 
+void screen_drawGameLine(unsigned short y, unsigned short x1, unsigned short x2, unsigned short color, unsigned short bgcolor);
+
 #endif

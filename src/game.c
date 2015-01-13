@@ -13,6 +13,7 @@ void game_init(Game* game)
     player.size = 10;
 
     (*game).score = 0;
+    (*game).screenPos = 0;
     (*game).player = player;
 
     game_drawBackground();
@@ -44,6 +45,15 @@ void game_draw(Game game)
 {
     game_drawGUI(game.score);
     game_drawPlayer(game.player);
+    game_drawNewLines(game.screenPos, 3);
+    screen_verticalScroll(game.screenPos);
+}
+
+void game_drawNewLines(unsigned short screenPos, unsigned short numlines)
+{
+	while (numlines--) {
+		screen_drawGameLine(SCREEN_FIXED_TOP_HEIGHT + screenPos + numlines, 20, 100, 0xffff, 0x0000);
+	}
 }
 
 void game_drawBackground()
