@@ -25,7 +25,8 @@ function bl51 {
 
 cd src
 c51 main.c
+c51 game.c
 c51 smbus.c
 c51 spi.c
 c51 utils.c
-bl51 main.OBJ, smbus.OBJ, spi.OBJ, utils.OBJ
+bl51 main.OBJ, smbus.OBJ, spi.OBJ, game.OBJ, utils.OBJ
