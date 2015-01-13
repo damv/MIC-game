@@ -15,8 +15,9 @@ typedef struct Game {
 } Game;
 
 void game_init(Game* game);
-
+void game_update(Game* game);
 void game_draw(Game game);
+
 void game_drawBackground();
 void game_drawAccelerometerValues(int x, int y);
 void game_drawGUI(unsigned long score);

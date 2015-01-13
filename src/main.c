@@ -60,8 +60,10 @@ void main()
     SYSCLK_init();
     PORT_init();
     TIMER1_init();
-    TIMER2_init(SYSCLK / 12 / 500); 
+    TIMER2_init(SYSCLK / 12 / 500);
     UART0_init();
+
+    srand(131241);
 
 	printf("\n===========================\n");
 	printf("  Welcome\n");
@@ -99,6 +101,7 @@ void main()
         game.player.x += ACCE_X / 10;
         game.player.y = positive_modulo(screenPos + 180, SCREEN_SCROLLING_HEIGHT);
 
+        game_update(&game);
         game_draw(game);
     }
 }

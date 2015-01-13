@@ -1,6 +1,7 @@
 #include "../lib/c8051f310.h"
 #include "spi.h"
 #include "game.h"
+#include "utils.h"
 
 
 void game_init(Game* game)
@@ -17,6 +18,19 @@ void game_init(Game* game)
     (*game).player = player;
 
     game_drawBackground();
+}
+
+void game_update(Game* game)
+{
+
+}
+
+void game_draw(Game game)
+{
+    game_drawGUI(game.score);
+    game_drawPlayer(game.player);
+    game_drawNewLines(game.screenPos, 3);
+    screen_verticalScroll(game.screenPos);
 }
 
 void game_drawAccelerometerValues(int x, int y)
@@ -41,18 +55,17 @@ void game_drawAccelerometerValues(int x, int y)
 	}
 }
 
-void game_draw(Game game)
-{
-    game_drawGUI(game.score);
-    game_drawPlayer(game.player);
-    game_drawNewLines(game.screenPos, 3);
-    screen_verticalScroll(game.screenPos);
-}
+
 
 void game_drawNewLines(unsigned short screenPos, unsigned short numlines)
 {
+	unsigned short x1, x2;
+
+	x1 = rand_a_b(20, 30);
+	x2 = rand_a_b(130, 150);
+
 	while (numlines--) {
-		screen_drawGameLine(SCREEN_FIXED_TOP_HEIGHT + screenPos + numlines, 20, 100, 0xffff, 0x0000);
+		screen_drawGameLine(SCREEN_FIXED_TOP_HEIGHT + screenPos + numlines, x1, x2, 0xffff, 0x0000);
 	}
 }
 
