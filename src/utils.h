@@ -3,4 +3,6 @@
 
 void delay(unsigned char ms);
 
+int positive_modulo(int x, int y);
+
 #endif

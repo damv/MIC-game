@@ -44,15 +44,6 @@ int event_check(event *e);
 // Function declarations
 //-----------------------------------------------------------------------------
 
-int positive_modulo (int x, int y)
-{
-    if (x>=0) {
-        return x%y;
-    } else {
-        return -(x%y);
-    }
-}
-
 void main()
 {
     unsigned int screenPos = 0;
@@ -113,11 +104,6 @@ void main()
         game_draw(game.player);
 
         screen_verticalScroll(screenPos);
-
-        if (event_check(&top_second))
-        {
-            // block called each second
-        }
     }
 }
 
