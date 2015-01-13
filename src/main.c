@@ -45,10 +45,10 @@ int event_check(event *e);
 //-----------------------------------------------------------------------------
 void main()
 {
-    unsigned char screenPos = 0;
+    unsigned int screenPos = 0;
     unsigned char playerX = HX8340B_LCDWIDTH / 2;
     unsigned char playerY = HX8340B_LCDHEIGHT - 20;
-    unsigned short screenSpeed = 0;
+    unsigned int screenSpeed = 0;
     unsigned char readByte0 = 0x00;
     unsigned char readByte1 = 0x00;
     
