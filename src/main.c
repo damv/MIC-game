@@ -45,9 +45,9 @@ int event_check(event *e);
 //-----------------------------------------------------------------------------
 void main()
 {
+
     unsigned int screenPos = 0;
-    unsigned char playerX = HX8340B_LCDWIDTH / 2;
-    unsigned char playerY = HX8340B_LCDHEIGHT - 20;
+    Player player;
     unsigned int screenSpeed = 0;
     unsigned char readByte0 = 0x00;
     unsigned char readByte1 = 0x00;
@@ -55,6 +55,9 @@ void main()
     signed int ACCE_X = 0x10;
     signed int ACCE_Y = 0x10;
     signed int ACCE_Z = 0x10;
+
+    player.x = HX8340B_LCDWIDTH / 2;
+    player.y = HX8340B_LCDHEIGHT - 20;
 
     PCA0MD &= ~0x40; // disable watchdog timer
 
@@ -99,12 +102,10 @@ void main()
         screenSpeed = -ACCE_Y / 10;
         screenPos = (screenPos + screenSpeed - 1) % SCREEN_SCROLLING_HEIGHT;
 
-        playerX += ACCE_X / 10;
-        playerY += screenSpeed;
+        player.x += ACCE_X / 10;
+        player.y += screenSpeed;
 
-        game_drawGUI();
-        game_drawPlayer(playerX, playerY);
-        game_drawAccelerometerValues(ACCE_X / 3, ACCE_Y / 3);
+        game_draw(player);
 
         screen_verticalScroll(screenPos);
 

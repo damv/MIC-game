@@ -2,6 +2,7 @@
 #include "spi.h"
 #include "game.h"
 
+
 void game_drawAccelerometerValues(int x, int y)
 {
     // erase lines
@@ -24,7 +25,13 @@ void game_drawAccelerometerValues(int x, int y)
 	}
 }
 
-void game_draw()
+void game_draw(Player player)
+{
+    game_drawGUI();
+    game_drawPlayer(player);
+}
+
+void game_drawBackground()
 {
 	screen_fillRect(10, 10, HX8340B_LCDWIDTH - 20, HX8340B_LCDHEIGHT - 20, 0xf350);
 	screen_fillRect(20, 20, HX8340B_LCDWIDTH - 40, HX8340B_LCDHEIGHT - 40, 0x0bd7);
@@ -38,8 +45,7 @@ void game_drawGUI()
 	}
 }
 
-void game_drawPlayer(unsigned short playerX, unsigned char playerY)
+void game_drawPlayer(Player player)
 {
-	unsigned short playerWidth = 10;
-	screen_fillRect(playerX - playerWidth / 2, playerY - playerWidth / 2, playerWidth, playerWidth, 0xff0f);
+	screen_fillRect(player.x - player.size / 2, player.y - player.size / 2, player.size, player.size, player.color);
 }
