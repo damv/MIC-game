@@ -51,7 +51,6 @@ xdata unsigned char readByte1 = 0x00;
 
 void main()
 {
-    
     signed int ACCE_X = 0x10;
     signed int ACCE_Y = 0x10;
     signed int ACCE_Z = 0x10;
@@ -94,11 +93,11 @@ void main()
             (int)ACCE_Z
         );
 
-        screenSpeed = -ACCE_Y / 10;
+		screenSpeed = (-7+ACCE_Y/30 <= 0)? -7+ACCE_Y/30 : 0;
         game.screenPos = positive_modulo((game.screenPos + screenSpeed - 1), SCREEN_SCROLLING_HEIGHT);
 
         game.player.x += ACCE_X / 10;
-        game.player.y += screenSpeed;
+        game.player.y += screenSpeed % SCREEN_SCROLLING_HEIGHT;
 
         game_draw(game);
 
