@@ -9,7 +9,8 @@ typedef struct Player {
 } Player;
 
 typedef struct Game {
-	unsigned long score;
+	unsigned int score;
+	unsigned int screenPos;
 	Player player;
 } Game;
 
@@ -20,5 +21,7 @@ void game_drawBackground();
 void game_drawAccelerometerValues(int x, int y);
 void game_drawGUI(unsigned long score);
 void game_drawPlayer(Player player);
+void game_drawNewLines(unsigned short screenPos, unsigned short numlines);
+
 
 #endif

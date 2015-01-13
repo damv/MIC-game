@@ -20,28 +20,28 @@ void screen_init()
 
     // taken from https://github.com/adafruit/Adafruit-HX8340B/blob/master/Adafruit_HX8340B.cpp
     // 14 commands in list
-    
+
     // 1: ???, 3 args, no delay
     SPI_writeCommand(HX8340B_N_SETEXTCMD);
     SPI_writeData(0xFF);
     SPI_writeData(0x83);
     SPI_writeData(0x40);
-    
+
     // 2: No args, delay follows
     SPI_writeCommand(HX8340B_N_SPLOUT);
     delay(150);
-    
+
     // 3: Undoc'd register?  3 args, no delay
     SPI_writeCommand(0xCA);
     SPI_writeData(0x70);
     SPI_writeData(0x00);
     SPI_writeData(0xD9);
-    
+
     // 4: Undoc'd register?  2 args, no delay
     SPI_writeCommand(0xB0);
     SPI_writeData(0x01);
     SPI_writeData(0x11);
-    
+
     // 5: Drive ability, 8 args + delay
     SPI_writeCommand(0xC9);
     SPI_writeData(0x90);
@@ -53,7 +53,7 @@ void screen_init()
     SPI_writeData(0x00);
     SPI_writeData(0x06);
     delay(20);
-    
+
     // 6: Positive gamma control, 9 args
     SPI_writeCommand(HX8340B_N_SETGAMMAP);
     SPI_writeData(0x60);
@@ -65,7 +65,7 @@ void screen_init()
     SPI_writeData(0x09);
     SPI_writeData(0x31);
     SPI_writeData(0x0A);
-    
+
     // 7: Negative gamma, 8 args + delay
     SPI_writeCommand(HX8340B_N_SETGAMMAN);
     SPI_writeData(0x67);
@@ -77,24 +77,24 @@ void screen_init()
     SPI_writeData(0x05);
     SPI_writeData(0x33);
     delay(10);
-    
+
     // 8: Power Control 5, 3 args
     SPI_writeCommand(HX8340B_N_SETPWCTR5);
     SPI_writeData(0x35);
     SPI_writeData(0x20);
     SPI_writeData(0x45);
-    
+
     // 9: Power control 4, 3 args + delay
     SPI_writeCommand(HX8340B_N_SETPWCTR4);
     SPI_writeData(0x33);
     SPI_writeData(0x25);
     SPI_writeData(0x4c);
     delay(10);
-    
+
     // 10: Color Mode, 1 arg
     SPI_writeCommand(HX8340B_N_COLMOD);
     SPI_writeData(0x05); // 0x05 = 16bpp, 0x06 = 18bpp
-    
+
     // 11: Display on, no args, w/delay
     SPI_writeCommand(HX8340B_N_DISPON);
     delay(10);
@@ -217,11 +217,35 @@ void screen_drawPixel(unsigned short x, unsigned short y, unsigned short color)
     SCREEN_CS = CS_DISABLE;
 }
 
+void screen_drawGameLine(unsigned short y, unsigned short x1, unsigned short x2, unsigned short color, unsigned short bgcolor)
+{
+	unsigned short w = 0;
+	unsigned char color_hi = color >> 8, color_lo = color;
+	unsigned char bgcolor_hi = bgcolor >> 8, bgcolor_lo = bgcolor;
+
+	screen_setWindow(0, y, HX8340B_LCDWIDTH-1, y + 1);
+
+	SCREEN_CS = CS_ENABLE;
+
+	while (w++ < HX8340B_LCDWIDTH) {
+		if (w <= x1 || w >= x2) {
+			SPI_writeData(color_hi);
+			SPI_writeData(color_lo);
+		}
+		else {
+			SPI_writeData(bgcolor_hi);
+			SPI_writeData(bgcolor_lo);
+		}
+	}
+
+	SCREEN_CS = CS_DISABLE;
+}
+
 void screen_drawNumber(unsigned short x, unsigned short y,
                        unsigned char num, unsigned short color,
                        unsigned short bgcolor)
 {
-    code unsigned long fontnumber[] = {
+    static xdata unsigned long fontnumber[] = {
         0xF4A52978, //0
         0x11942108, //1
         0x64844478, //2
@@ -243,7 +267,7 @@ void screen_drawNumber(unsigned short x, unsigned short y,
     screen_setWindow(x, y, x + 4, y + 5);
 
     SCREEN_CS = CS_ENABLE;
-    
+
     for (b = 0x80000000; b > 0x00000004; b = b >> 1)
     {
         if (fontnumber[num] & b) {
@@ -254,7 +278,7 @@ void screen_drawNumber(unsigned short x, unsigned short y,
             SPI_writeData(bghi);
             SPI_writeData(bglo);
         }
-    }   
+    }
 
     SCREEN_CS = CS_DISABLE;
 }
@@ -299,7 +323,6 @@ void screen_drawFastHLine(unsigned short x, unsigned short y, unsigned short w, 
 {
     unsigned short x2 = x + w - 1;
     unsigned char hi = color >> 8, lo = color;
-
 
     if ((y < 0) || (y >= HX8340B_LCDHEIGHT) || (x >= HX8340B_LCDWIDTH)) {
         return; // off screen
