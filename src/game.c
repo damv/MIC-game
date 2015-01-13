@@ -44,6 +44,7 @@ void game_draw(Game game)
     game_drawGUI(game.score);
     game_drawPlayer(game.player);
     game_drawNewLines(game.screenPos, 3);
+    screen_verticalScroll(game.screenPos);
 }
 
 void game_drawNewLines(unsigned short screenPos, unsigned short numlines)

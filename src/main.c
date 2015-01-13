@@ -93,15 +93,13 @@ void main()
             (int)ACCE_Z
         );
 
-		screenSpeed = (-7+ACCE_Y/30 <= 0)? -7+ACCE_Y/30 : 0;
+		screenSpeed = (-7 + ACCE_Y / 30 <= 0) ? -7 + ACCE_Y / 30 : 0;
         game.screenPos = positive_modulo((game.screenPos + screenSpeed - 1), SCREEN_SCROLLING_HEIGHT);
 
         game.player.x += ACCE_X / 10;
         game.player.y += screenSpeed % SCREEN_SCROLLING_HEIGHT;
 
         game_draw(game);
-
-        screen_verticalScroll(game.screenPos);
     }
 }
 
