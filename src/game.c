@@ -49,7 +49,7 @@ void game_update(Game* game, int acce_x, int acce_y)
     game->score += 1;
 
     // check for collision
-    if (game->player->x < 0 || game->player->x > HX8340B_LCDWIDTH) {
+    if (game_isThereCollision) {
     	game->over = 1;
     }
 }
@@ -142,7 +142,7 @@ bool game_isThereCollision(Game* game)
 	signed short x = game->player->x;
 	unsigned int screenPos = game->screenPos; 
 	GameLine line = game->lines[ (screenPos+y) %SCREEN_SCROLLING_HEIGHT ]
-	
+
 	unsigned short demiSize = game->player.size /2;
 	return ( (line.x1 > x-demiSize) || (line.x2 < x+demiSize) ) 
 }
