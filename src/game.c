@@ -11,7 +11,6 @@
 void game_init(Game* game, Player* player)
 {
 	unsigned char i;
-	GameLine line = { 0, 0 };
 
     player->x = HX8340B_LCDWIDTH / 2;
     player->y = HX8340B_LCDHEIGHT - 20;
@@ -25,7 +24,8 @@ void game_init(Game* game, Player* player)
     game->over = 0;
 
     for (i = 0; i < SCREEN_SCROLLING_HEIGHT; i++) {
-    	game->lines[i] = line;
+    	game->lines[i].x1 = 0;
+    	game->lines[i].x2 = HX8340B_LCDWIDTH;
     }
 
     game_drawBackground();
@@ -37,7 +37,7 @@ int min(int a, int b) {
 
 void game_update(Game* game, int acce_x, int acce_y)
 {
-	int screenSpeed = min(-7 + acce_y / 40, 0);
+	int screenSpeed = -(game->score / 1000);
 
 	// save previous screen position
 	game->prevScreenPos = game->screenPos;
@@ -46,10 +46,10 @@ void game_update(Game* game, int acce_x, int acce_y)
     game->player->x += (acce_x / 10) - 1; // calibration
     game->player->y = SCREEN_FIXED_TOP_HEIGHT + positive_modulo(game->screenPos + 160, SCREEN_SCROLLING_HEIGHT);
 
-    game->score += 1;
+    game->score += -screenSpeed + 1;
 
     // check for collision
-    if (game_isThereCollision) {
+    if (game_isThereCollision(game)) {
     	game->over = 1;
     }
 }
@@ -64,8 +64,8 @@ void game_draw(Game* game)
 
 void game_drawGameOver(int score)
 {
-	screen_verticalScroll(0);
 	screen_fill(0);
+	delay(500);
 }
 
 void game_drawAccelerometerValues(int x, int y)
@@ -94,17 +94,21 @@ void game_drawAccelerometerValues(int x, int y)
 
 void game_drawNewLines(Game* game)
 {
-	unsigned short x1, x2, y;
+	unsigned char x1, x2, y, real_y;
 	short i;
-	float val = (float)game->score / 20.0;
+	float val = (float)game->score / 30.0;
 	unsigned short numlines = positive_modulo(game->prevScreenPos - game->screenPos + 1, SCREEN_SCROLLING_HEIGHT);
 
-	x1 = (1 + sin(val)) * 30.0;
-	x2 = HX8340B_LCDWIDTH - (1 + cos(val * 1.2)) * 30.0;
+	x1 = (1 + sin(val)) * 40.0;
+	x2 = HX8340B_LCDWIDTH - (1 + cos(val * 1.2)) * 40.0;
 
 	for (i = 0; i <= numlines - 1 ; i++) {
-		y = SCREEN_FIXED_TOP_HEIGHT + positive_modulo(game->screenPos - i, SCREEN_SCROLLING_HEIGHT);
-		screen_drawGameLine(y, x1, x2, COLOR_WHITE, COLOR_BLACK);
+		y = positive_modulo(game->screenPos - i, SCREEN_SCROLLING_HEIGHT);
+		game->lines[y].x1 = x1;
+		game->lines[y].x2 = x2;
+
+		real_y = SCREEN_FIXED_TOP_HEIGHT + y;
+		screen_drawGameLine(real_y, x1, x2, COLOR_WHITE, COLOR_BLACK);
 	}
 }
 
@@ -145,15 +149,19 @@ void game_drawPlayer(Player* player)
 	screen_fillRect(player->x - player->size / 2, top, player->size, player->size, player->color);
 }
 
-bool game_isThereCollision(Game* game)
+unsigned char game_isThereCollision(Game* game)
 {
 	signed short y = game->player->y;
 	signed short x = game->player->x;
-	unsigned int screenPos = game->screenPos; 
-	GameLine line = game->lines[ (screenPos+y) %SCREEN_SCROLLING_HEIGHT ]
+	unsigned short halfSize = game->player->size / 2;
+	unsigned char x1, x2, index;
 
-	unsigned short demiSize = game->player.size /2;
-	return ( (line.x1 > x-demiSize) || (line.x2 < x+demiSize) ) 
+	index = y - SCREEN_FIXED_TOP_HEIGHT;
+
+	x1 = (*game->lines)[index].x1;
+	x2 = (*game->lines)[index].x2;
+
+	return ( (x1 > x - halfSize) || (x2 < x + halfSize) );
 }
 
 

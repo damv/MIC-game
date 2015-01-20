@@ -80,8 +80,7 @@ void main()
     EA = 1; // enable global interrupts
 
     game_init(&game, &player);
-
-    screen_verticalScroll(SCREEN_SCROLLING_HEIGHT-30);
+    printf("- Game initialized\n");
 
     while (!game.over)
     {
