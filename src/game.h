@@ -25,6 +25,6 @@ void game_drawBackground();
 void game_drawAccelerometerValues(int x, int y);
 void game_drawGUI(unsigned long score);
 void game_drawPlayer(Player* player);
-void game_drawNewLines(unsigned short screenPos, unsigned short numlines);
+void game_drawNewLines(Game* game, unsigned short numlines);
 
 #endif

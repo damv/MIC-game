@@ -81,12 +81,16 @@ void main()
 
     game_init(&game, &player);
 
-    while (1)
+    screen_verticalScroll(SCREEN_SCROLLING_HEIGHT-30);
+
+    while (!game.over)
     {
-        ACCE_read(&ACCE_X, &ACCE_Y, &ACCE_Z);
+    	ACCE_read(&ACCE_X, &ACCE_Y, &ACCE_Z);
         game_update(&game, ACCE_X, ACCE_Y);
         game_draw(&game);
     }
+
+    game_drawGameOver(game.score);
 }
 
 void UART0_init()

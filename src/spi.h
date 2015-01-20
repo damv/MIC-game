@@ -8,6 +8,15 @@
 #define SCREEN_FIXED_BOT_HEIGHT			    0
 #define SCREEN_SCROLLING_HEIGHT			  200
 
+#define	COLOR_BLACK           0x0000
+#define	COLOR_BLUE            0x001F
+#define	COLOR_RED             0xF800
+#define	COLOR_GREEN           0x07E0
+#define COLOR_CYAN            0x07FF
+#define COLOR_MAGENTA         0xF81F
+#define COLOR_YELLOW          0xFFE0
+#define COLOR_WHITE           0xFFFF
+
 // HX8340-B(N) Commands (used by BTL221722-276L)
 #define HX8340B_N_NOP                     (0x00)
 #define HX8340B_N_SWRESET                 (0x01)
