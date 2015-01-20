@@ -65,6 +65,7 @@ void game_draw(Game* game)
 void game_drawGameOver(int score)
 {
 	screen_fill(0);
+//	game_drawScore()
 	delay(500);
 }
 
@@ -94,13 +95,15 @@ void game_drawAccelerometerValues(int x, int y)
 
 void game_drawNewLines(Game* game)
 {
-	unsigned char x1, x2, y, real_y;
+	unsigned char middle, x1, x2, y, real_y;
 	short i;
 	float val = (float)game->score / 30.0;
 	unsigned short numlines = positive_modulo(game->prevScreenPos - game->screenPos + 1, SCREEN_SCROLLING_HEIGHT);
 
-	x1 = (1 + sin(val)) * 40.0;
-	x2 = HX8340B_LCDWIDTH - (1 + cos(val * 1.2)) * 40.0;
+	middle = sin(val / 5.0) * HX8340B_LCDWIDTH / 5 + HX8340B_LCDWIDTH / 2;
+
+	x1 = middle - (1.5 + sin(val)) * 20.0;
+	x2 = middle + (1.5 + cos(val * 1.2)) * 20.0;
 
 	for (i = 0; i <= numlines - 1 ; i++) {
 		y = positive_modulo(game->screenPos - i, SCREEN_SCROLLING_HEIGHT);
