@@ -6,7 +6,7 @@
 
 #define SCREEN_FIXED_TOP_HEIGHT			   20
 #define SCREEN_FIXED_BOT_HEIGHT			    0
-#define SCREEN_SCROLLING_HEIGHT			  200
+#define SCREEN_SCROLLING_HEIGHT			  199
 
 #define	COLOR_BLACK           0x0000
 #define	COLOR_BLUE            0x001F
