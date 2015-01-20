@@ -135,3 +135,16 @@ void game_drawPlayer(Player* player)
 
 	screen_fillRect(player->x - player->size / 2, top, player->size, player->size, player->color);
 }
+
+bool game_isThereCollision(Game* game)
+{
+	signed short y = game->player->y;
+	signed short x = game->player->x;
+	unsigned int screenPos = game->screenPos; 
+	GameLine line = game->lines[ (screenPos+y) %SCREEN_SCROLLING_HEIGHT ]
+	
+	unsigned short demiSize = game->player.size /2;
+	return ( (line.x1 > x-demiSize) || (line.x2 < x+demiSize) ) 
+}
+
+
