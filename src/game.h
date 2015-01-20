@@ -11,18 +11,20 @@ typedef struct Player {
 typedef struct Game {
 	unsigned int score;
 	unsigned int screenPos;
-	Player player;
+	unsigned int prevScreenPos;
+	unsigned short over;
+	Player* player;
 } Game;
 
-void game_init(Game* game);
-void game_update(Game* game);
-void game_draw(Game game);
+void game_init(Game* game, Player* player);
+void game_update(Game* game, int acce_x, int acce_y);
+void game_draw(Game* game);
 
+void game_drawGameOver(int score);
 void game_drawBackground();
 void game_drawAccelerometerValues(int x, int y);
 void game_drawGUI(unsigned long score);
-void game_drawPlayer(Player player);
+void game_drawPlayer(Player* player);
 void game_drawNewLines(unsigned short screenPos, unsigned short numlines);
-
 
 #endif

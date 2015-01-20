@@ -1,36 +1,70 @@
+#include <math.h>
 #include "../lib/c8051f310.h"
+
 #include "spi.h"
 #include "game.h"
 #include "utils.h"
 
 
-void game_init(Game* game)
+void game_init(Game* game, Player* player)
 {
-	Player player;
+    player->x = HX8340B_LCDWIDTH / 2;
+    player->y = HX8340B_LCDHEIGHT - 20;
+    player->color = 0xaaaa;
+    player->size = 10;
 
-    player.x = HX8340B_LCDWIDTH / 2;
-    player.y = HX8340B_LCDHEIGHT - 20;
-    player.color = 0xaaaa;
-    player.size = 10;
-
-    (*game).score = 0;
-    (*game).screenPos = 0;
-    (*game).player = player;
+    game->score = 0;
+    game->screenPos = 0;
+    game->prevScreenPos = 0;
+    game->player = player;
+    game->over = 0;
 
     game_drawBackground();
 }
 
-void game_update(Game* game)
+void game_update(Game* game, int acce_x, int acce_y)
 {
+	int screenSpeed;
 
+	if (game->over) {
+		// don't update
+		return;
+	}
+
+	screenSpeed = (-7 + acce_x / 30 <= 0) ? -7 + acce_y / 30 : 0;
+
+	// save previous screen position
+	game->prevScreenPos = game->screenPos;
+
+    game->screenPos = positive_modulo((game->screenPos + screenSpeed - 1), SCREEN_SCROLLING_HEIGHT);
+
+    game->player->x += acce_x / 10;
+    game->player->y = positive_modulo(game->screenPos + 180, SCREEN_SCROLLING_HEIGHT);
+
+    // check for collision
+    if (game->player->x < 0 || game->player->x > HX8340B_LCDWIDTH) {
+    	game->over = 1;
+    }
 }
 
-void game_draw(Game game)
+void game_draw(Game* game)
 {
-    game_drawGUI(game.score);
-    game_drawPlayer(game.player);
-    game_drawNewLines(game.screenPos, 3);
-    screen_verticalScroll(game.screenPos);
+    game_drawGUI(game->score);
+
+    if (game->over) {
+    	game_drawGameOver(game->score);
+    }
+    else {
+		game_drawPlayer(game->player);
+		game_drawNewLines(game->screenPos, positive_modulo(game->prevScreenPos - game->screenPos, SCREEN_SCROLLING_HEIGHT));
+		screen_verticalScroll(game->screenPos);
+    }
+}
+
+void game_drawGameOver(int score)
+{
+	screen_verticalScroll(0);
+	screen_fill(0);
 }
 
 void game_drawAccelerometerValues(int x, int y)
@@ -59,31 +93,34 @@ void game_drawAccelerometerValues(int x, int y)
 
 void game_drawNewLines(unsigned short screenPos, unsigned short numlines)
 {
-	unsigned short x1, x2;
-
+	unsigned short x1, x2, y;
 	x1 = rand_a_b(20, 30);
 	x2 = rand_a_b(130, 150);
 
 	while (numlines--) {
-		screen_drawGameLine(SCREEN_FIXED_TOP_HEIGHT + screenPos + numlines, x1, x2, 0xffff, 0x0000);
+		y = (SCREEN_FIXED_TOP_HEIGHT + screenPos + numlines) % SCREEN_SCROLLING_HEIGHT;
+		screen_drawGameLine(y, x1, x2, 0xffff, 0x0000);
 	}
 }
 
 void game_drawBackground()
 {
-	screen_fillRect(10, 10, HX8340B_LCDWIDTH - 20, HX8340B_LCDHEIGHT - 20, 0xf350);
-	screen_fillRect(20, 20, HX8340B_LCDWIDTH - 40, HX8340B_LCDHEIGHT - 40, 0x0bd7);
+	screen_fill(0xffff);
 }
 
 void game_drawGUI(unsigned long score)
 {
-	int i;
-	for (i = 0; i < 10; i++) {
-		screen_drawNumber(2 + 10 * i, 2, i, 0x1736, 0x8276);
+	unsigned char digit;
+	unsigned char counter = 0;
+	while (score != 0) {
+		score /= 10;
+		digit = score % 10;
+		counter++;
+		screen_drawNumber(2 + 10 * counter, 2, digit, 0x1736, 0x8276);
 	}
 }
 
-void game_drawPlayer(Player player)
+void game_drawPlayer(Player* player)
 {
-	screen_fillRect(player.x - player.size / 2, player.y - player.size / 2, player.size, player.size, player.color);
+	screen_fillRect(player->x - player->size / 2, player->y - player->size / 2, player->size, player->size, player->color);
 }

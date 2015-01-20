@@ -45,9 +45,7 @@ int event_check(event *e);
 //-----------------------------------------------------------------------------
 
 xdata Game game;
-xdata unsigned int screenSpeed = 0;
-xdata unsigned char readByte0 = 0x00;
-xdata unsigned char readByte1 = 0x00;
+xdata Player player;
 
 void main()
 {
@@ -81,7 +79,7 @@ void main()
 
     EA = 1; // enable global interrupts
 
-    game_init(&game);
+    game_init(&game, &player);
 
     while(1)
     {
@@ -95,14 +93,8 @@ void main()
             (int)ACCE_Z
         );
 
-		screenSpeed = (-7 + ACCE_Y / 30 <= 0) ? -7 + ACCE_Y / 30 : 0;
-        game.screenPos = positive_modulo((game.screenPos + screenSpeed - 1), SCREEN_SCROLLING_HEIGHT);
-
-        game.player.x += ACCE_X / 10;
-        game.player.y = positive_modulo(screenPos + 180, SCREEN_SCROLLING_HEIGHT);
-
-        game_update(&game);
-        game_draw(game);
+        game_update(&game, ACCE_X, ACCE_Y);
+        game_draw(&game);
     }
 }
 
