@@ -8,12 +8,18 @@ typedef struct Player {
 	unsigned short color;
 } Player;
 
+typedef struct GameLine {
+	unsigned char x1;
+	unsigned char x2;
+} GameLine;
+
 typedef struct Game {
-	unsigned int score;
+	unsigned long score;
 	unsigned int screenPos;
 	unsigned int prevScreenPos;
 	unsigned short over;
 	Player* player;
+	GameLine lines[SCREEN_SCROLLING_HEIGHT];
 } Game;
 
 void game_init(Game* game, Player* player);
@@ -25,6 +31,6 @@ void game_drawBackground();
 void game_drawAccelerometerValues(int x, int y);
 void game_drawGUI(unsigned long score);
 void game_drawPlayer(Player* player);
-void game_drawNewLines(Game* game, unsigned short numlines);
+void game_drawNewLines(Game* game);
 
 #endif

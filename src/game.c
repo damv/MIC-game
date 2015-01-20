@@ -10,6 +10,9 @@
 
 void game_init(Game* game, Player* player)
 {
+	unsigned char i;
+	GameLine line = { 0, 0 };
+
     player->x = HX8340B_LCDWIDTH / 2;
     player->y = HX8340B_LCDHEIGHT - 20;
     player->color = COLOR_CYAN;
@@ -21,6 +24,10 @@ void game_init(Game* game, Player* player)
     game->player = player;
     game->over = 0;
 
+    for (i = 0; i < SCREEN_SCROLLING_HEIGHT; i++) {
+    	game->lines[i] = line;
+    }
+
     game_drawBackground();
 }
 
@@ -30,14 +37,7 @@ int min(int a, int b) {
 
 void game_update(Game* game, int acce_x, int acce_y)
 {
-	int screenSpeed;
-
-	if (game->over) {
-		// don't update
-		return;
-	}
-
-	screenSpeed = min(-7 + acce_y / 40, 0);
+	int screenSpeed = min(-7 + acce_y / 40, 0);
 
 	// save previous screen position
 	game->prevScreenPos = game->screenPos;
@@ -58,7 +58,7 @@ void game_draw(Game* game)
 {
 	screen_verticalScroll(game->screenPos);
 	game_drawGUI(game->score);
-	game_drawNewLines(game, positive_modulo(game->prevScreenPos - game->screenPos, SCREEN_SCROLLING_HEIGHT) + 1);
+	game_drawNewLines(game);
 	game_drawPlayer(game->player);
 }
 
@@ -92,10 +92,12 @@ void game_drawAccelerometerValues(int x, int y)
 
 
 
-void game_drawNewLines(Game* game, unsigned short numlines)
+void game_drawNewLines(Game* game)
 {
 	unsigned short x1, x2, y;
 	float val = (float)game->score / 20.0;
+	unsigned short numlines = positive_modulo(game->prevScreenPos - game->screenPos + 1, SCREEN_SCROLLING_HEIGHT);
+
 	x1 = (1 + sin(val)) * 30.0;
 	x2 = HX8340B_LCDWIDTH - (1 + cos(val * 1.2)) * 30.0;
 
