@@ -118,8 +118,6 @@ void screen_init()
     
     // disable
     SCREEN_CS = CS_DISABLE;
-
-    screen_fill(0);
 }
 
 void _screen_reset()

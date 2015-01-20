@@ -41,6 +41,8 @@ void game_update(Game* game, int acce_x, int acce_y)
     game->player->x += acce_x / 10;
     game->player->y = positive_modulo(game->screenPos + 180, SCREEN_SCROLLING_HEIGHT);
 
+    game->score += 1;
+
     // check for collision
     if (game->player->x < 0 || game->player->x > HX8340B_LCDWIDTH) {
     	game->over = 1;
@@ -49,12 +51,11 @@ void game_update(Game* game, int acce_x, int acce_y)
 
 void game_draw(Game* game)
 {
-    game_drawGUI(game->score);
-
     if (game->over) {
     	game_drawGameOver(game->score);
     }
     else {
+    	game_drawGUI(game->score);
 		game_drawPlayer(game->player);
 		game_drawNewLines(game->screenPos, positive_modulo(game->prevScreenPos - game->screenPos, SCREEN_SCROLLING_HEIGHT));
 		screen_verticalScroll(game->screenPos);
@@ -105,7 +106,10 @@ void game_drawNewLines(unsigned short screenPos, unsigned short numlines)
 
 void game_drawBackground()
 {
-	screen_fill(0xffff);
+	// fill top part of the screen with a different color
+	screen_fillRect(0, 0, HX8340B_LCDWIDTH, SCREEN_FIXED_TOP_HEIGHT, 0x3405);
+
+	screen_fillRect(0, SCREEN_FIXED_TOP_HEIGHT, HX8340B_LCDWIDTH, SCREEN_SCROLLING_HEIGHT, 0x0000);
 }
 
 void game_drawGUI(unsigned long score)
@@ -113,10 +117,10 @@ void game_drawGUI(unsigned long score)
 	unsigned char digit;
 	unsigned char counter = 0;
 	while (score != 0) {
-		score /= 10;
 		digit = score % 10;
+		score /= 10;
 		counter++;
-		screen_drawNumber(2 + 10 * counter, 2, digit, 0x1736, 0x8276);
+		screen_drawNumber(HX8340B_LCDWIDTH - 10 * (counter + 1), 2, digit, 0x1736, 0x3405);
 	}
 }
 
