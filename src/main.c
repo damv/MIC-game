@@ -61,8 +61,6 @@ void main()
     TIMER2_init(SYSCLK / 12 / 500);
     UART0_init();
 
-    srand(131241);
-
 	printf("\n===========================\n");
 	printf("  Welcome\n");
 	printf("===========================\n");
@@ -85,7 +83,7 @@ void main()
     while (!game.over)
     {
     	ACCE_read(&ACCE_X, &ACCE_Y, &ACCE_Z);
-        game_update(&game, ACCE_X, ACCE_Y);
+        game_update(&game, ACCE_X);
         game_draw(&game);
     }
 

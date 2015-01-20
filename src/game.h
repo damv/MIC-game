@@ -23,13 +23,13 @@ typedef struct Game {
 } Game;
 
 void game_init(Game* game, Player* player);
-void game_update(Game* game, int acce_x, int acce_y);
+void game_update(Game* game, int acce_x);
 void game_draw(Game* game);
 
-void game_drawGameOver(int score);
+void game_drawGameOver(unsigned long score);
 void game_drawBackground();
 void game_drawAccelerometerValues(int x, int y);
-void game_drawGUI(unsigned long score);
+void game_drawScore(unsigned long score, unsigned char x, unsigned char y);
 void game_drawPlayer(Player* player);
 void game_drawNewLines(Game* game);
 unsigned char game_isThereCollision(Game* game);

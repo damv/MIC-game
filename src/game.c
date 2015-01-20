@@ -14,7 +14,7 @@ void game_init(Game* game, Player* player)
 
     player->x = HX8340B_LCDWIDTH / 2;
     player->y = HX8340B_LCDHEIGHT - 20;
-    player->color = COLOR_CYAN;
+    player->color = COLOR_BLUE;
     player->size = 10;
 
     game->score = 0;
@@ -35,7 +35,7 @@ int min(int a, int b) {
 	return a < b ? a : b;
 }
 
-void game_update(Game* game, int acce_x, int acce_y)
+void game_update(Game* game, int acce_x)
 {
 	int screenSpeed = -(game->score / 1000);
 
@@ -57,16 +57,17 @@ void game_update(Game* game, int acce_x, int acce_y)
 void game_draw(Game* game)
 {
 	screen_verticalScroll(game->screenPos);
-	game_drawGUI(game->score);
+	game_drawScore(game->score, HX8340B_LCDWIDTH + 2, 7);
 	game_drawNewLines(game);
 	game_drawPlayer(game->player);
 }
 
-void game_drawGameOver(int score)
+void game_drawGameOver(unsigned long score)
 {
 	screen_fill(0);
-//	game_drawScore()
-	delay(500);
+	screen_verticalScroll(0);
+	game_drawScore(score, HX8340B_LCDWIDTH / 2 + 20, HX8340B_LCDHEIGHT / 2);
+	delay(1000);
 }
 
 void game_drawAccelerometerValues(int x, int y)
@@ -105,13 +106,13 @@ void game_drawNewLines(Game* game)
 	x1 = middle - (1.5 + sin(val)) * 20.0;
 	x2 = middle + (1.5 + cos(val * 1.2)) * 20.0;
 
-	for (i = 0; i <= numlines - 1 ; i++) {
+	for (i = 0; i <= numlines - 1; i++) {
 		y = positive_modulo(game->screenPos - i, SCREEN_SCROLLING_HEIGHT);
 		game->lines[y].x1 = x1;
 		game->lines[y].x2 = x2;
 
 		real_y = SCREEN_FIXED_TOP_HEIGHT + y;
-		screen_drawGameLine(real_y, x1, x2, COLOR_WHITE, COLOR_BLACK);
+		screen_drawGameLine(real_y, x1, x2, COLOR_BLACK, COLOR_WHITE);
 	}
 }
 
@@ -127,10 +128,10 @@ void game_drawBackground()
 	screen_drawFastVLine(HX8340B_LCDWIDTH - 1, 0, SCREEN_FIXED_TOP_HEIGHT, COLOR_YELLOW);
 
 	// fill the rest
-	screen_fillRect(0, SCREEN_FIXED_TOP_HEIGHT, HX8340B_LCDWIDTH, SCREEN_SCROLLING_HEIGHT, COLOR_BLACK);
+	screen_fillRect(0, SCREEN_FIXED_TOP_HEIGHT, HX8340B_LCDWIDTH, SCREEN_SCROLLING_HEIGHT, COLOR_WHITE);
 }
 
-void game_drawGUI(unsigned long score)
+void game_drawScore(unsigned long score, unsigned char x, unsigned char y)
 {
 	unsigned char digit;
 	unsigned char counter = 0;
@@ -138,7 +139,7 @@ void game_drawGUI(unsigned long score)
 		digit = score % 10;
 		score /= 10;
 		counter++;
-		screen_drawNumber(HX8340B_LCDWIDTH + 2 - 8 * (counter + 1), 7, digit, COLOR_WHITE, COLOR_RED);
+		screen_drawNumber(x - 8 * (counter + 1), y, digit, COLOR_WHITE, COLOR_RED);
 	}
 }
 
