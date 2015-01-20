@@ -102,7 +102,7 @@ void game_drawNewLines(Game* game)
 	x2 = HX8340B_LCDWIDTH - (1 + cos(val * 1.2)) * 30.0;
 
 	while (numlines--) {
-		y = SCREEN_FIXED_TOP_HEIGHT + ((game->prevScreenPos + numlines) % SCREEN_SCROLLING_HEIGHT);
+		y = SCREEN_FIXED_TOP_HEIGHT + positive_modulo((game->screenPos - numlines), SCREEN_SCROLLING_HEIGHT);
 		screen_drawGameLine(y, x1, x2, 0xffff, 0x0000);
 	}
 }
@@ -129,7 +129,7 @@ void game_drawGUI(unsigned long score)
 void game_drawPlayer(Player* player)
 {
 	unsigned char top = player->y - player->size / 2;
-	if (top < SCREEN_FIXED_BOT_HEIGHT) {
+	if (top < SCREEN_FIXED_TOP_HEIGHT) {
 		top = SCREEN_FIXED_TOP_HEIGHT;
 	}
 
