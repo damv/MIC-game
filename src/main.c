@@ -81,18 +81,9 @@ void main()
 
     game_init(&game, &player);
 
-    while(1)
+    while (1)
     {
-        // SMBUS TEST
         ACCE_read(&ACCE_X, &ACCE_Y, &ACCE_Z);
-
-        printf(
-            "Accelerometer : %d\t%d\t%d\n",
-            (int)ACCE_X,
-            (int)ACCE_Y,
-            (int)ACCE_Z
-        );
-
         game_update(&game, ACCE_X, ACCE_Y);
         game_draw(&game);
     }

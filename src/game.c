@@ -22,6 +22,10 @@ void game_init(Game* game, Player* player)
     game_drawBackground();
 }
 
+int min(int a, int b) {
+	return a < b ? a : b;
+}
+
 void game_update(Game* game, int acce_x, int acce_y)
 {
 	int screenSpeed;
@@ -31,7 +35,8 @@ void game_update(Game* game, int acce_x, int acce_y)
 		return;
 	}
 
-	screenSpeed = (-7 + acce_x / 30 <= 0) ? -7 + acce_y / 30 : 0;
+
+	screenSpeed = min(-7 + acce_y / 40, 0);
 
 	// save previous screen position
 	game->prevScreenPos = game->screenPos;
