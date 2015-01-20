@@ -43,7 +43,7 @@ void game_update(Game* game, int acce_x, int acce_y)
 	game->prevScreenPos = game->screenPos;
     game->screenPos = positive_modulo((game->screenPos + screenSpeed - 1), SCREEN_SCROLLING_HEIGHT);
 
-    game->player->x += acce_x / 10;
+    game->player->x += (acce_x / 10) - 1; // calibration
     game->player->y = SCREEN_FIXED_TOP_HEIGHT + positive_modulo(game->screenPos + 160, SCREEN_SCROLLING_HEIGHT);
 
     game->score += 1;
@@ -95,15 +95,16 @@ void game_drawAccelerometerValues(int x, int y)
 void game_drawNewLines(Game* game)
 {
 	unsigned short x1, x2, y;
+	short i;
 	float val = (float)game->score / 20.0;
 	unsigned short numlines = positive_modulo(game->prevScreenPos - game->screenPos + 1, SCREEN_SCROLLING_HEIGHT);
 
 	x1 = (1 + sin(val)) * 30.0;
 	x2 = HX8340B_LCDWIDTH - (1 + cos(val * 1.2)) * 30.0;
 
-	while (numlines--) {
-		y = SCREEN_FIXED_TOP_HEIGHT + positive_modulo((game->screenPos - numlines), SCREEN_SCROLLING_HEIGHT);
-		screen_drawGameLine(y, x1, x2, 0xffff, 0x0000);
+	for (i = 0; i <= numlines - 1 ; i++) {
+		y = SCREEN_FIXED_TOP_HEIGHT + positive_modulo(game->screenPos - i, SCREEN_SCROLLING_HEIGHT);
+		screen_drawGameLine(y, x1, x2, COLOR_WHITE, COLOR_BLACK);
 	}
 }
 
@@ -111,6 +112,14 @@ void game_drawBackground()
 {
 	// fill top part of the screen with a different color
 	screen_fillRect(0, 0, HX8340B_LCDWIDTH, SCREEN_FIXED_TOP_HEIGHT, COLOR_RED);
+
+	// draw a rectangle around
+	screen_drawFastHLine(0, 0, HX8340B_LCDWIDTH, COLOR_YELLOW);
+	screen_drawFastHLine(0, SCREEN_FIXED_TOP_HEIGHT - 1, HX8340B_LCDWIDTH, COLOR_YELLOW);
+	screen_drawFastVLine(0, 0, SCREEN_FIXED_TOP_HEIGHT, COLOR_YELLOW);
+	screen_drawFastVLine(HX8340B_LCDWIDTH - 1, 0, SCREEN_FIXED_TOP_HEIGHT, COLOR_YELLOW);
+
+	// fill the rest
 	screen_fillRect(0, SCREEN_FIXED_TOP_HEIGHT, HX8340B_LCDWIDTH, SCREEN_SCROLLING_HEIGHT, COLOR_BLACK);
 }
 
@@ -122,7 +131,7 @@ void game_drawGUI(unsigned long score)
 		digit = score % 10;
 		score /= 10;
 		counter++;
-		screen_drawNumber(HX8340B_LCDWIDTH - 10 * (counter + 1), 2, digit, COLOR_WHITE, COLOR_RED);
+		screen_drawNumber(HX8340B_LCDWIDTH + 2 - 8 * (counter + 1), 7, digit, COLOR_WHITE, COLOR_RED);
 	}
 }
 
