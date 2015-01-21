@@ -90,49 +90,13 @@ void SMBUS_nack()
 
 void ACCE_begin()
 {   
-	SMBUS_start();
+    SMBUS_start();
 
     // Power ON
     SMBUS_write_address(ACCE_ADDR, WRITE);
     SMBUS_write_value(POWER_CTRL);
     SMBUS_write_value(0x08); // Measurement Mode
-    //SMBUS_stop(); //?????????????????????????????????????????
 }
-
-void GYRO_read(
-    unsigned char* gyro_x0,
-    unsigned char* gyro_x1,
-    unsigned char* gyro_y0,
-    unsigned char* gyro_y1,
-    unsigned char* gyro_z0,
-    unsigned char* gyro_z1
-)
-{
-    // send address and write register
-    SMBUS_start();
-    SMBUS_write_address(GYRO_ADDR, WRITE);
-    SMBUS_write_value(0x28);
-
-    // send address in read mode
-    SMBUS_start();
-    SMBUS_write_address(GYRO_ADDR, READ);
-    
-    // read char
-    *gyro_x0 = SMBUS_read_value();
-    SMBUS_ack();
-    *gyro_x1 = SMBUS_read_value();
-    SMBUS_ack();
-    *gyro_y0 = SMBUS_read_value();
-    SMBUS_ack();
-    *gyro_y1 = SMBUS_read_value();
-    SMBUS_ack();
-    *gyro_z0 = SMBUS_read_value();
-    SMBUS_ack();
-    *gyro_z1 = SMBUS_read_value();
-    SMBUS_nack();
-}
-
-
 
 void ACCE_read(
     int* ACCE_X,
@@ -173,7 +137,4 @@ void ACCE_read(
     *ACCE_X = ((int)ACCE_X1 << 8) | ACCE_X0;
     *ACCE_Y = ((int)ACCE_Y1 << 8) | ACCE_Y0;
     *ACCE_Z = ((int)ACCE_Z1 << 8) | ACCE_Z0;
-
-    // SMBUS_stop();
 }
-
